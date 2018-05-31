@@ -14,9 +14,13 @@ class SharedNotebook(models.Model):
     This could be used
     to fetch the OpenHumansMember object given a DataSourceMember object.
     """
-    user = models.OneToOneField(OpenHumansMember, on_delete=models.CASCADE)
+    oh_member = models.ForeignKey(OpenHumansMember, on_delete=models.CASCADE)
+    notebook_name = models.TextField(default='')
+    notebook_content = models.TextField(default='')
+    description = models.TextField(default='')
+    tags = models.TextField(default='')
     # Your other fields should go below here
-    last_updated = models.DateTimeField(
+    updated_at = models.DateTimeField(
                             default=(arrow.now() - timedelta(days=7)).format())
-    last_submitted = models.DateTimeField(
+    created_at = models.DateTimeField(
                             default=(arrow.now() - timedelta(days=7)).format())

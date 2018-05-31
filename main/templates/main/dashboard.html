@@ -3,65 +3,30 @@
 {% block content %}
 
   <div class="container">
-    <h1>Welcome back to the <i>Rescuetime</i> integration for <i>Open Humans</i></h1>
+    <h1>Your Notebook Gallery</h1>
     <p class="lead">
-      You can perform basic management tasks from this page.
+      See which notebooks you have shared and can share.
     </p>
-    {% if rescuetime_member%}
     <div class="row">
       <div class="col-md-6">
         <p>
-        A <i>RescueTime</i> account is connected to your <i>Open Humans</i>
-        right now. You can trigger an
-        update your <i>RescueTime</i> data (automatic data updates are done every few days,
-        but you might want to have your latest data right now).
+          <h4>Notebooks in your Open Humans accounts that can be shared</h4>
+        {% for nb_file in notebook_files%}
+          <a href="{% url 'add-notebook-gallery' nb_file.id %}">Add <code>{{nb_file.basename}}</code></a></br>
+        {%endfor%}
         </p>
-        {% if allow_update%}
-        <form action="{% url 'update_data' %}" method="post">
-          {% csrf_token %}
-          <input type="submit"
-            value="Update Data"
-            style="margin-top:6px;"
-            class="btn btn-primary">
-        </form>
-        {%else%}
-        <a
-          class="btn btn-default disabled"
-          href="#"
-          >
-          You recently requested data. Please wait 1 hour.
-        </a><br/>
-        <p>Getting the latest data from RescueTime takes a while and impacts other users too,
-          thus we limit the frequency with which you can request updates.</p>
-        {%endif%}
-        <br/>
-        <p>You want do remove your current RescueTime account and maybe replace with
-          with a different one? Click below to remove your current RescueTime account</p>
-        <form action="{% url 'remove_rescuetime' %}" method="post">
-          {% csrf_token %}
-          <input type="submit"
-            value="Disconnect RescueTime"
-            style="margin-top:6px;"
-            class="btn btn-danger">
-        </form>
-
       </div>
       <div class="col-md-6">
         <p>
-          You can download a copy of your <i>RescueTime</i> data from here.
+          <h4>Notebooks you have already published in the gallery</h4>
         </p>
-        {% if download_file %}
-        <a
-          class="btn btn-success"
-          href="{{download_file}}"
-          >
-          Download <i>RescueTime</i> Data
-        </a>
+        {% if existing_notebooks %}
+          {%for notebook in existing_notebooks%}
+          <code>{{notebook.notebook_name}}</code>
+            <a href="{% url 'render-notebook' notebook.id %}">(preview)</a></br>
+          {%endfor%}
         {%else%}
-        <a
-          class="btn btn-default disabled"
-          href="#"
-          >
+
           No data available yet.
         </a>
         <p>If you have recently connected your RescueTime account it can take a bit
@@ -69,17 +34,6 @@
         {%endif%}
       </div>
     </div>
-      {% else %}
-      <p class="lead">
-        You haven't connected to <i>RescueTime</i> yet. click below to get started.
-      </p>
-      <a
-        class="btn btn-primary btn-lg"
-        href="{{connect_url}}"
-        >
-        Connect your <i>RescueTime</i> account
-      </a>
-      {%endif%}
   </div>
 
 {% endblock %}

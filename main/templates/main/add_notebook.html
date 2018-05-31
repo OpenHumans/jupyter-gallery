@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="container">
+    {%if edit %}
+      <h1>Update your existing notebook <code>{{name}}</code>.</h1>
+    {%else%}
+    <h1>Publish your notebook <code>{{name}}</code>.</h1>
+    {%endif%}
+    <form action="{% url 'add-notebook-gallery' notebook_id %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label>Description</label>
+      <input class="form-control" name="description" size=60 type="text"
+        value="{{description}}"
+        placeholder="Enter a description for your notebook" required>
+    </div>
+    <div class="form-group">
+      <label>Tags</label>
+      <input class="form-control" name="tags" size=60 type="text"
+        value="{{tags}}"
+        placeholder="Enter a comma-separated list of tags" required>
+    </div>
+    <input type="submit"
+            value="Submit Notebook"
+            style="margin-top:6px;"
+            class="btn btn-primary">
+    </form>
+  </div>
+{% endblock %}
