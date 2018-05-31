@@ -24,7 +24,8 @@
           {%for notebook in existing_notebooks%}
           <code>{{notebook.notebook_name}}</code>
             <a href="{% url 'render-notebook' notebook.id %}">(preview)</a>
-            <a href="{% url 'export-notebook' notebook.id %}">(export)</a>
+            <a href="{% url 'export-notebook' notebook.id %}">(export to json)</a>
+            <a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'>(load in PDN)</a>
           </br>
           {%endfor%}
         {%else%}

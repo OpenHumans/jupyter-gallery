@@ -11,7 +11,8 @@ from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
 from .models import SharedNotebook
 from django.http import HttpResponse
 import arrow
-import nbconvert, nbformat
+import nbconvert
+import nbformat
 # Set up logging.
 logger = logging.getLogger(__name__)
 
@@ -67,6 +68,8 @@ def dashboard(request):
     existing_notebooks = SharedNotebook.objects.filter(oh_member=oh_member)
     context['notebook_files'] = all_available_notebooks
     context['existing_notebooks'] = existing_notebooks
+    context['JH_URL'] = settings.JUPYTERHUB_BASE_URL
+    context['base_url'] = request.build_absolute_uri("/").rstrip('/')
     return render(request, 'main/dashboard.html',
                   context=context)
 
