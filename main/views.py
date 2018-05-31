@@ -5,7 +5,6 @@ from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from django.conf import settings
 from open_humans.models import OpenHumansMember
-from .models import DataSourceMember
 from .helpers import get_rescuetime_file, check_update
 from ohapi import api
 import arrow

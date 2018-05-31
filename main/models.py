@@ -4,7 +4,7 @@ from datetime import timedelta
 import arrow
 
 
-class DataSourceMember(models.Model):
+class SharedNotebook(models.Model):
     """
     Store OAuth data for a data source.
     This is a one to one relationship with a OpenHumansMember model
@@ -16,8 +16,6 @@ class DataSourceMember(models.Model):
     """
     user = models.OneToOneField(OpenHumansMember, on_delete=models.CASCADE)
     # Your other fields should go below here
-    access_token = models.CharField(max_length=256, default="")
-    scope = models.CharField(max_length=256, default="")
     last_updated = models.DateTimeField(
                             default=(arrow.now() - timedelta(days=7)).format())
     last_submitted = models.DateTimeField(
