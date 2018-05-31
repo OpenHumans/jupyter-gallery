@@ -51,9 +51,8 @@ OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
 OH_DIRECT_UPLOAD_COMPLETE = OH_API_BASE + '/project/files/upload/complete/'
 OH_DELETE_FILES = OH_API_BASE + '/project/files/delete/'
 
-RESCUETIME_CLIENT_ID = os.getenv('RESCUETIME_CLIENT_ID')
-RESCUETIME_CLIENT_SECRET = os.getenv('RESCUETIME_CLIENT_SECRET')
-RESCUETIME_REDIRECT_URI = os.getenv('RESCUETIME_REDIRECT_URI')
+JUPYTERHUB_BASE_URL = os.getenv('JUPYTERHUB_BASE_URL',
+                                'http://localhost:8888')
 
 # Applications installed
 INSTALLED_APPS = [
