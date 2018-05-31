@@ -1,0 +1,10 @@
+db.sqlite3
+*.DS_Store
+*.pyc
+.env
+.env*
+__pycache__
+*.py[cod]
+*$py.class
+staticfiles/*
+dump.rdb

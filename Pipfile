@@ -1,0 +1,33 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+django = "*"
+celery = "*"
+arrow = "*"
+requests = "*"
+gunicorn = "*"
+dj-database-url = "*"
+"psycopg2" = "*"
+whitenoise = "*"
+env-tools = "*"
+redis = "*"
+pyyaml = "*"
+open-humans-api = "*"
+nbconvert = "*"
+
+[dev-packages]
+
+vcrpy = "*"
+freezegun = "*"
+coverage = "*"
+
+
+[requires]
+
+python_version = "3.6"
