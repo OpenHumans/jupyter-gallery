@@ -11,5 +11,9 @@ urlpatterns = [
          name='add-notebook-gallery'),
     path('render-notebook/<notebook_id>/',
          views.render_notebook,
-         name='render-notebook')
+         name='render-notebook'),
+    path('export-notebook/<notebook_id>/',
+         views.export_notebook,
+         name='export-notebook')
+
 ]

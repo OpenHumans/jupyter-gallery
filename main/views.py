@@ -124,6 +124,12 @@ def render_notebook(request, notebook_id):
     return HttpResponse(body)
 
 
+def export_notebook(request, notebook_id):
+    notebook = SharedNotebook.objects.get(pk=notebook_id)
+    return HttpResponse(notebook.notebook_content,
+                        content_type='application/json')
+
+
 def oh_code_to_member(code):
     """
     Exchange code for token, use this to create and return OpenHumansMember.

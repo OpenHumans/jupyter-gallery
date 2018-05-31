@@ -23,7 +23,9 @@
         {% if existing_notebooks %}
           {%for notebook in existing_notebooks%}
           <code>{{notebook.notebook_name}}</code>
-            <a href="{% url 'render-notebook' notebook.id %}">(preview)</a></br>
+            <a href="{% url 'render-notebook' notebook.id %}">(preview)</a>
+            <a href="{% url 'export-notebook' notebook.id %}">(export)</a>
+          </br>
           {%endfor%}
         {%else%}
 
