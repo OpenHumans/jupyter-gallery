@@ -20,6 +20,7 @@ redis = "*"
 pyyaml = "*"
 open-humans-api = "*"
 nbconvert = "*"
+markdown = "*"
 
 [dev-packages]
 

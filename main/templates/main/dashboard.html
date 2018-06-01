@@ -6,15 +6,30 @@
       See which notebooks you have shared and can share.
     </p>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <p>
-          <h4>Notebooks in your Open Humans accounts that can be shared</h4>
-        {% for nb_file in notebook_files%}
-          <a href="{% url 'add-notebook-gallery' nb_file.id %}">Add <code>{{nb_file.basename}}</code></a></br>
-        {%endfor%}
+          <h4>Notebooks you can share</h4>
+          <div class="table-responsive">
+          <table class='table'>
+            <thead>
+              <tr>
+                <th>Notebook title</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for nb_file in notebook_files%}
+            <tr>
+              <td>
+              <code>{{nb_file.basename}}</code> <a href="{% url 'add-notebook-gallery' nb_file.id%}"><button type="button" class="btn btn-default btn-xs">add/replace <i class="far fa-plus-square"></i></button></a>
+              </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+        </div>
         </p>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <p>
           <h4>Notebooks you have already published in the gallery</h4>
         </p>
@@ -26,12 +41,16 @@
               <th>Notebook title</th>
               <th></th>
               <th></th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
           {%for notebook in existing_notebooks%}
             <tr>
               <td><code>{{notebook.notebook_name}}</code></td>
+              <td><a href="{% url 'edit-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">edit description <i class="far fa-edit"></i></button></a></td>
+              <td><a href="{% url 'delete-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">delete <i class="far fa-trash-alt"></i></button></a></td>
               <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></td>
               <td><a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
             </tr>

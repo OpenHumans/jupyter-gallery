@@ -2,7 +2,7 @@ from django.db import models
 from open_humans.models import OpenHumansMember
 from datetime import timedelta
 import arrow
-
+import json
 
 class SharedNotebook(models.Model):
     """
@@ -19,8 +19,18 @@ class SharedNotebook(models.Model):
     notebook_content = models.TextField(default='')
     description = models.TextField(default='')
     tags = models.TextField(default='')
+    data_sources = models.TextField(default='')
     # Your other fields should go below here
     updated_at = models.DateTimeField(
                             default=(arrow.now() - timedelta(days=7)).format())
     created_at = models.DateTimeField(
                             default=(arrow.now() - timedelta(days=7)).format())
+
+    def get_tags(self):
+        return ",".join(json.loads(self.tags)) if self.tags else ''
+
+    def get_data_sources(self):
+        if self.data_sources:
+            return ",".join(json.loads(self.data_sources))
+        else:
+            return ''

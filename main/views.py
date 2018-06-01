@@ -13,6 +13,7 @@ from django.http import HttpResponse
 import arrow
 import nbconvert
 import nbformat
+import json
 # Set up logging.
 logger = logging.getLogger(__name__)
 
@@ -93,7 +94,12 @@ def add_notebook(request, notebook_id):
                                                 oh_member=oh_member,
                                                 notebook_name=notebook_name)
         notebook.description = request.POST.get('description')
-        notebook.tags = request.POST.get('tags')
+        tags = request.POST.get('tags')
+        tags = [tag.strip() for tag in tags.split(',')]
+        notebook.tags = json.dumps(tags)
+        data_sources = request.POST.get('data_sources')
+        data_sources = [ds.strip() for ds in data_sources.split(',')]
+        notebook.data_sources = json.dumps(data_sources)
         notebook.notebook_name = notebook_name
         notebook.notebook_content = notebook_content.decode()
         notebook.updated_at = arrow.now().format()
@@ -117,7 +123,8 @@ def add_notebook(request, notebook_id):
                                         oh_member=oh_member,
                                         notebook_name=notebook_name)
             context = {'description': existing_notebook.description,
-                       'tags': existing_notebook.tags,
+                       'tags': existing_notebook.get_tags(),
+                       'data_sources': existing_notebook.get_data_sources(),
                        'name': notebook_name,
                        'notebook_id': str(notebook_id),
                        'edit': True}
@@ -125,8 +132,49 @@ def add_notebook(request, notebook_id):
             context = {'description': '',
                        'name': notebook_name,
                        'notebook_id': str(notebook_id),
-                       'tags': ''}
+                       'tags': '',
+                       'data_sources': ''}
         return render(request, 'main/add_notebook.html', context=context)
+
+
+@login_required(login_url="/")
+def edit_notebook(request, notebook_id):
+    oh_member = request.user.oh_member
+    notebook = SharedNotebook.objects.get(pk=notebook_id)
+    if notebook.oh_member != oh_member:
+        messages.warning(request, 'Permission denied!')
+        return redirect("/")
+    if request.method == "POST":
+        notebook.description = request.POST.get('description')
+        tags = request.POST.get('tags')
+        tags = [tag.strip() for tag in tags.split(',')]
+        notebook.tags = json.dumps(tags)
+        data_sources = request.POST.get('data_sources')
+        data_sources = [ds.strip() for ds in data_sources.split(',')]
+        notebook.data_sources = json.dumps(data_sources)
+        notebook.updated_at = arrow.now().format()
+        notebook.save()
+        messages.info(request, 'Updated {}!'.format(notebook.notebook_name))
+        return redirect("/dashboard")
+    else:
+        context = {'description': notebook.description,
+                   'tags': notebook.get_tags(),
+                   'data_sources': notebook.get_data_sources(),
+                   'name': notebook.notebook_name,
+                   'notebook_id': str(notebook_id)}
+        return render(request, 'main/edit_notebook.html', context=context)
+
+
+@login_required(login_url="/")
+def delete_notebook(request, notebook_id):
+    oh_member = request.user.oh_member
+    notebook = SharedNotebook.objects.get(pk=notebook_id)
+    if notebook.oh_member != oh_member:
+        messages.warning(request, 'Permission denied!')
+        return redirect("/")
+    notebook.delete()
+    messages.info(request, 'Deleted {}!'.format(notebook.notebook_name))
+    return redirect("/dashboard")
 
 
 def render_notebook(request, notebook_id):

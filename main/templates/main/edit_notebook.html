@@ -2,16 +2,12 @@
 {% load static %}
 {% block content %}
 
-    {%if edit %}
-      <h1>Update your existing notebook <code>{{name}}</code>.</h1>
-    {%else%}
-    <h1>Publish your notebook <code>{{name}}</code>.</h1>
-    {%endif%}
-    <form action="{% url 'add-notebook-gallery' notebook_id %}" method="post">
+    <h1>Edit your notebook <code>{{name}}</code>.</h1>
+    <form action="{% url 'edit-notebook' notebook_id %}" method="post">
     {% csrf_token %}
     <div class="form-group">
       <label>Description</label>
-      <textarea class="form-control" rows=10 name="description" size=60 type="text"
+      <textarea rows=10 class="form-control" name="description" size=60 type="text"
         placeholder="Enter a description for your notebook" required>{{description}}</textarea>
         <p class="help-block">
         Please give a description of what your notebook does, which data sources it uses etc.
@@ -38,7 +34,7 @@
       </p>
     </div>
     <input type="submit"
-            value="Submit Notebook"
+            value="Update"
             style="margin-top:6px;"
             class="btn btn-primary">
     </form>
