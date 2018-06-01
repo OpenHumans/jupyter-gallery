@@ -19,13 +19,26 @@
           <h4>Notebooks you have already published in the gallery</h4>
         </p>
         {% if existing_notebooks %}
+        <div class="table-responsive">
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>Notebook title</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
           {%for notebook in existing_notebooks%}
-          <code>{{notebook.notebook_name}}</code>
-            <a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal">(preview)</a>
-            <a href="{% url 'export-notebook' notebook.id %}">(export to json)</a>
-            <a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'>(load in PDN)</a>
-          </br>
+            <tr>
+              <td><code>{{notebook.notebook_name}}</code></td>
+              <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></td>
+              <td><a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
+            </tr>
           {%endfor%}
+          </tbody>
+        </table>
+        </div>
         {%else%}
 
           No data available yet.

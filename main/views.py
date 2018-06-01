@@ -50,6 +50,16 @@ def complete(request):
     return redirect('/')
 
 
+@login_required(login_url="/")
+def logout_user(request):
+    """
+    Logout user
+    """
+    if request.method == 'POST':
+        logout(request)
+    return redirect('index')
+
+
 @login_required(login_url='/')
 def dashboard(request):
     oh_member = request.user.oh_member
@@ -67,6 +77,7 @@ def dashboard(request):
     context['existing_notebooks'] = existing_notebooks
     context['JH_URL'] = settings.JUPYTERHUB_BASE_URL
     context['base_url'] = request.build_absolute_uri("/").rstrip('/')
+    context['section'] = 'dashboard'
     return render(request, 'main/dashboard.html',
                   context=context)
 

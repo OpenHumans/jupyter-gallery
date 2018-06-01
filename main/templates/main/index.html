@@ -3,13 +3,9 @@
 {% block content %}
 
   <div class="container">
-    <h1>Integrate your <i>RescueTime</i> account into <i>Open Humans</i></h1>
+    <h1>Explore the <i>Personal Data Notebooks</i> that users of <i>Open Humans</i> have shared</h1>
     <p class="lead">
-      This app connects your <i>RescueTime</i> to your
-      <a href="https://www.openhumans.org/">Open Humans</a> account and
-      makes sure to update your data regularly.
-    </p>
-    <p class="lead">
+      By logging in into the gallery you can share your own Personal Data Notebooks.
       Learn more by visiting our
       <a href="{{ oh_proj_page }}">page on Open Humans</a>.
     </p>
@@ -18,18 +14,11 @@
         <h2>How it works</h2>
         <ol>
           <li><b>Click the button below</b><br>
-            This takes you to Open Humans authentification page.</li>
-          <li><b>Log in or create an Open Humans account</b><br>
-            Your RescueTime data will be added to this account.</li>
+            This logs you in into your Open Humans account.</li>
           <li><b>Authorize this app in Open Humans</b><br>
-            This authorizes us to add your RescueTime data to your account.</li>
-          <li><b>Authorize us to access your RescueTime account.</b><br>
-            The Open Humans website will redirect you back to us for the last
-            step: Authorizing us to access your <i>RescueTime</i> account. It will take you to the RescueTime website.
-          </li>
-          <li><b>Authorize this app on RescueTime.</b><br>
-            This allows us to request your RescueTime data for you.
-            Once that's done you are all set and we will download your data for you!
+            This authorizes us to look at the notebooks you have privately stored on Open Humans.</li>
+          <li><b>Start sharing your notebooks!</b><br>
+            Share what you have built!
           </li>
         </ol>
         <a
@@ -40,7 +29,7 @@
           class="btn btn-default disabled"
           {% endif %}
           >
-          Start with Open Humans authorization
+          Get started
         </a>
         {% if not client_id %}
         <p class="text-muted"><i>
@@ -49,40 +38,8 @@
         {% endif %}
       </div>
       <div class='col-md-6'>
-        <h2>FAQ</h2>
-        <ol>
-          <li><b>Which data will be included from RescueTime?</b><br>
-            <b>The short answer</b>: It depends on your <i>RescueTime</i> settings.<br>
-            <b>The longer answer</b>: Which data will be collected by <i>RescueTime</i> can be adjusted
-            in the RescueTime settings.
-            If you have set it up that way <b>your data might contain information about visited websites & information about your emails</b>.
-          </li>
-          <li><b>Will my data from RescueTime be public?</b><br>
-            <b>The short answer</b>: No, by connecting your RescueTime account you don't agree
-            to make your data public or give anyone access to this data.
-            It will be stored in your account and you decide with whom to share.<br>
-            <b>The longer answer</b>: It can be public if you want it to be public.
-            If you're logged in into Open Humans <a href='https://www.openhumans.org/public-data/'>
-              can make individual sources publicly available
-            through the public data feature</a>.
-          </li>
-          <li><b>Are you getting access to my RescueTime data during the upload?</b><br>
-            Yes, by connecting your RescueTime account to this application the administrator(s) of this integration (see below)
-            can read to your RescueTime data. This access will exclusively be used to upload your RescueTime
-            data to Open Humans and to debug this integration.
-            With the exception of data management within service providers used by this project (e.g. cloud services for the web server),
-            your RescueTime data will not be further accessed by third parties. 
-          After logging in you can also manually trigger an update.</li>
-          <li><b>Do you keep my data up to date?</b><br>
-            Yes, we regularly update your data to keep it up to date.
-          After logging in you can also manually trigger an update.</li>
-          <li><b>Who's running this project?</b><br>
-            This project is run by <a href="http://www.ruleofthirds.de">Bastian Greshake Tzovaras</a>.</li>
-          <li><b>How can I be in touch with you?</b><br>
-            You can reach me via email at bgreshake@googlemail.com or
-            even quicker <a href="https://www.twitter.com/gedankenstuecke">@gedankenstuecke</a> on Twitter.
-          </li>
-        </ol>
+        <h2>The latest notebook additions</h2>
+         <p class='lead'> Content will be here!</p>
       </div>
     </div>
 </div>
