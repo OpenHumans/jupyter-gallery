@@ -123,7 +123,6 @@ def render_notebook(request, notebook_id):
     html_exporter = nbconvert.HTMLExporter()
     html_exporter.template_file = 'basic'
     (body, resources) = html_exporter.from_notebook_node(format_notebook)
-    print(body)
     return HttpResponse(body)
 
 
