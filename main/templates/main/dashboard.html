@@ -1,8 +1,6 @@
 {% extends 'main/base.html' %}
-{% load static %}
 {% block content %}
-
-  <div class="container">
+{% load static %}
     <h1>Your Notebook Gallery</h1>
     <p class="lead">
       See which notebooks you have shared and can share.
@@ -43,12 +41,11 @@
 <!-- Modal -->
 <div id="previewModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><i><div id='nbtitle_fill'></i></code></h4>
+        <h4 class="modal-title"><i><div id='nbtitle_fill'></div></i></code></h4>
       </div>
       <div class="modal-body">
         <div id='notebook_filler'></div>
@@ -57,9 +54,6 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
-
   </div>
 </div>
-  </div>
-
 {% endblock %}

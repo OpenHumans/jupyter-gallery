@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 
-  <div class="container">
     {%if edit %}
       <h1>Update your existing notebook <code>{{name}}</code>.</h1>
     {%else%}
@@ -27,5 +26,4 @@
             style="margin-top:6px;"
             class="btn btn-primary">
     </form>
-  </div>
 {% endblock %}

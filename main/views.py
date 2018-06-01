@@ -92,10 +92,15 @@ def add_notebook(request, notebook_id):
         notebook.oh_member = oh_member
         if created:
             notebook.created_at = arrow.now().format()
+            messages.info(request, 'Your notebook {} has been shared!'.format(
+                notebook_name
+            ))
+        else:
+            messages.info(request, 'Your notebook {} has been updated!'.format(
+                notebook_name
+            ))
         notebook.save()
-        messages.info(request, 'Your Notebook {} has been shared!'.format(
-            notebook_name
-        ))
+
         return redirect('/dashboard')
     else:
         if len(SharedNotebook.objects.filter(oh_member=oh_member,
