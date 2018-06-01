@@ -11,16 +11,30 @@
       <th>Data Sources</th>
       <th></th>
       <th></th>
+      <th>Last updated</th>
     </tr>
   </thead>
   <tbody>
   {%for notebook in notebooks%}
     <tr>
-      <td><code>{{notebook.notebook_name}}</code></td>
-      <td><a href="{% url 'edit-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">edit description <i class="far fa-edit"></i></button></a></td>
-      <td><a href="{% url 'delete-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">delete <i class="far fa-trash-alt"></i></button></a></td>
+      <td>
+        <a href="{%url 'notebook-details' notebook.id%}">
+          <code>{{notebook.notebook_name}}</code> <i class="fas fa-info-circle"></i>
+        </a>
+      </td>
+      <td>
+        {%for tag in notebook.get_tags_json%}
+        <span class="label label-primary">{{tag}}</span>
+        {%endfor%}
+      </td>
+      <td>
+        {%for source in notebook.get_data_sources_json%}
+        <span class="label label-info">{{source}}</span>
+        {%endfor%}
+      </td>
       <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></td>
       <td><a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
+      <td>{{notebook.updated_at|timesince}} ago</td>
     </tr>
   {%endfor%}
   </tbody>
@@ -39,4 +53,22 @@
         {% endif %}
       </ul>
 </nav>
+<div id="previewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i><div id='nbtitle_fill'></div></i></code></h4>
+      </div>
+      <div class="modal-body">
+        <div id='notebook_filler'></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

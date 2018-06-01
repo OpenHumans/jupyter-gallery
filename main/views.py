@@ -24,7 +24,7 @@ def index(request):
     Starting page for app.
     """
     if request.user.is_authenticated:
-        return redirect('/dashboard')
+        return redirect('/notebooks')
     else:
         context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE}
 
@@ -195,7 +195,7 @@ def export_notebook(request, notebook_id):
 
 
 def notebook_index(request):
-    notebook_list = SharedNotebook.objects.all().order_by('updated_at')
+    notebook_list = SharedNotebook.objects.all().order_by('-updated_at')
     paginator = Paginator(notebook_list, 20)
     page = request.GET.get('page')
     try:
@@ -211,6 +211,18 @@ def notebook_index(request):
                   {'notebooks': notebooks,
                    'section': 'explore'})
 
+
+def notebook_details(request, notebook_id):
+    notebook = SharedNotebook.objects.get(pk=notebook_id)
+    format_notebook = nbformat.reads(notebook.notebook_content,
+                                     as_version=nbformat.NO_CONVERT)
+    html_exporter = nbconvert.HTMLExporter()
+    html_exporter.template_file = 'basic'
+    (body, resources) = html_exporter.from_notebook_node(format_notebook)
+    return render(request,
+                  'main/notebook_details.html',
+                  {'notebook': notebook,
+                   'notebook_preview': body})
 
 
 def oh_code_to_member(code):
