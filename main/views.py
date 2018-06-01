@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from open_humans.models import OpenHumansMember
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
@@ -191,6 +192,25 @@ def export_notebook(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
     return HttpResponse(notebook.notebook_content,
                         content_type='application/json')
+
+
+def notebook_index(request):
+    notebook_list = SharedNotebook.objects.all().order_by('updated_at')
+    paginator = Paginator(notebook_list, 20)
+    page = request.GET.get('page')
+    try:
+        notebooks = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        notebooks = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        notebooks = paginator.page(paginator.num_pages)
+    return render(request,
+                  'main/notebook_index.html',
+                  {'notebooks': notebooks,
+                   'section': 'explore'})
+
 
 
 def oh_code_to_member(code):

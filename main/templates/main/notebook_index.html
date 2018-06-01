@@ -1,0 +1,42 @@
+{% extends 'main/base.html' %}
+{% block content %}
+{% load static %}
+<h1>Published Personal Data Notebooks</h1>
+<div class="table-responsive">
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Notebook title</th>
+      <th>Tags</th>
+      <th>Data Sources</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for notebook in notebooks%}
+    <tr>
+      <td><code>{{notebook.notebook_name}}</code></td>
+      <td><a href="{% url 'edit-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">edit description <i class="far fa-edit"></i></button></a></td>
+      <td><a href="{% url 'delete-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">delete <i class="far fa-trash-alt"></i></button></a></td>
+      <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></td>
+      <td><a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
+    </tr>
+  {%endfor%}
+  </tbody>
+</table>
+</div>
+<nav aria-label="pagination">
+      <ul class="pagination">
+        {% if notebooks.has_previous %}
+            <li><a href="?page=1">&laquo; first</a></li>
+            <li><a aria-label="Previous" href="?page={{ notebooks.previous_page_number }}">previous</a></li>
+        {% endif %}
+            <li class="active"><a href='#'>Page {{ notebooks.number }} of {{ notebooks.paginator.num_pages }}</a></li>
+        {% if notebooks.has_next %}
+            <li><a href="?page={{ notebooks.next_page_number }}">next</a></li>
+            <li><a href="?page={{ notebooks.paginator.num_pages }}">last &raquo;</a></li>
+        {% endif %}
+      </ul>
+</nav>
+{% endblock %}

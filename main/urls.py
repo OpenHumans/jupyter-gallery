@@ -7,6 +7,7 @@ urlpatterns = [
     path('complete/', views.complete, name='complete'),
     path('logout/', views.logout_user, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('notebooks/', views.notebook_index, name='notebook-index'),
     path('add-notebook-gallery/<notebook_id>/',
          views.add_notebook,
          name='add-notebook-gallery'),

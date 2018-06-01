@@ -47,7 +47,7 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li {% if section == 'explore' %} class="active" {%endif%}><a href="#">Explore Notebooks</a></li>
+              <li {% if section == 'explore' %} class="active" {%endif%}><a href="{%url "notebook-index"%}">Explore Notebooks</a></li>
             </ul>
             <form class="navbar-form navbar-left">
               <div class="form-group">
