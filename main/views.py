@@ -26,7 +26,10 @@ def index(request):
     if request.user.is_authenticated:
         return redirect('/notebooks')
     else:
-        context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE}
+        latest_notebooks = SharedNotebook.objects.all(
+            ).order_by('-updated_at')[:10]
+        context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
+                   'latest_notebooks': latest_notebooks}
 
         return render(request, 'main/index.html', context=context)
 

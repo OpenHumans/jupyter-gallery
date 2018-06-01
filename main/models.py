@@ -4,6 +4,7 @@ from datetime import timedelta
 import arrow
 import json
 
+
 class SharedNotebook(models.Model):
     """
     Store OAuth data for a data source.

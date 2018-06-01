@@ -3,14 +3,19 @@
 {% block content %}
 
   <div class="container">
-    <h1>Explore the <i>Personal Data Notebooks</i> that users of <i>Open Humans</i> have shared</h1>
-    <p class="lead">
-      By logging in into the gallery you can share your own Personal Data Notebooks.
-      Learn more by visiting our
-      <a href="{{ oh_proj_page }}">page on Open Humans</a>.
-    </p>
+    <div class="jumbotron">
+      <h1>Welcome to the <i>Personal Data Exploratorium</i></h1>
+      <p>
+        📊📓 Use the <i>Exploratorium</i> to learn about yourself and how your personal data can be used.
+        Based on interactive notebooks you use ready-made data analyses of your data right in your web browser.
+        Got your own analyses idea? Write a new notebook and share the notebook with others!</p>
+  </div>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-5">
+        <p class="lead">
+          Powered by <code><a href="https://notebooks.openhumans.org">notebooks.openhumans.org</a></code> the
+          <i>Personal Data Exploratorium</i> does XYZ, but now I really should head out and grab a 🍺.
+        </p>
         <h2>How it works</h2>
         <ol>
           <li><b>Click the button below</b><br>
@@ -37,9 +42,45 @@
         </i></p>
         {% endif %}
       </div>
-      <div class='col-md-6'>
+      <div class='col-md-7'>
         <h2>The latest notebook additions</h2>
-         <p class='lead'> Content will be here!</p>
+        Check out the latest notebooks that have been shared by our community.
+        <div class="table-responsive">
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Tags</th>
+              <th>Data Sources</th>
+              <th>Updated</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {%for notebook in latest_notebooks%}
+            <tr>
+              <td>
+                <a href="{%url 'notebook-details' notebook.id%}">
+                  <code>{{notebook.notebook_name}}</code> <i class="fas fa-info-circle"></i>
+                </a>
+              </td>
+              <td>
+                {%for tag in notebook.get_tags_json%}
+                <span class="label label-primary">{{tag}}</span>
+                {%endfor%}
+              </td>
+              <td>
+                {%for source in notebook.get_data_sources_json%}
+                <span class="label label-info">{{source}}</span>
+                {%endfor%}
+              </td>
+              <td>{{notebook.updated_at|timesince}} ago</td>
+              <td><a href='{% url 'notebook-details' notebook.id %}'><button type="button" class="btn btn-default btn-xs">more details <i class="fas fa-info"></i></button></a></td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+        </div>
       </div>
     </div>
 </div>
