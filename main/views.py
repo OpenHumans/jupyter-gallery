@@ -121,7 +121,7 @@ def render_notebook(request, notebook_id):
     format_notebook = nbformat.reads(notebook.notebook_content,
                                      as_version=nbformat.NO_CONVERT)
     html_exporter = nbconvert.HTMLExporter()
-    html_exporter.template_file = 'full'
+    html_exporter.template_file = 'basic'
     (body, resources) = html_exporter.from_notebook_node(format_notebook)
     print(body)
     return HttpResponse(body)

@@ -23,7 +23,7 @@
         {% if existing_notebooks %}
           {%for notebook in existing_notebooks%}
           <code>{{notebook.notebook_name}}</code>
-            <a href="{% url 'render-notebook' notebook.id %}">(preview)</a>
+            <a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal">(preview)</a>
             <a href="{% url 'export-notebook' notebook.id %}">(export to json)</a>
             <a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'>(load in PDN)</a>
           </br>
@@ -37,6 +37,29 @@
         {%endif%}
       </div>
     </div>
+
+    <!-- Trigger the modal with a button -->
+
+<!-- Modal -->
+<div id="previewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i><div id='nbtitle_fill'></i></code></h4>
+      </div>
+      <div class="modal-body">
+        <div id='notebook_filler'></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
   </div>
 
 {% endblock %}
