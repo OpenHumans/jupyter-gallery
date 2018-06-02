@@ -19,6 +19,22 @@ import json
 logger = logging.getLogger(__name__)
 
 
+def shared(request):
+    """
+    Users get linked here after clicking export
+    on notebooks.openhumans.org
+    """
+    if request.user.is_authenticated:
+        messages.info(request,
+                      ("Your notebook was uploaded into your Open Humans "
+                       "account and can now be shared from here!"))
+        return redirect('/dashboard')
+    latest_notebooks = SharedNotebook.objects.all(
+        ).order_by('-updated_at')[:10]
+    context = {'latest_notebooks': latest_notebooks}
+    return render(request, 'main/shared.html', context)
+
+
 def index(request):
     """
     Starting page for app.

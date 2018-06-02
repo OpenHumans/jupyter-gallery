@@ -1,0 +1,72 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+  <div class="col-md-5">
+
+    <h2>Your Notebook was added to your <i>Open Humans</i> account.</h2>
+    <p class="lead">
+      Your notebook has <b>not</b> been shared or made public at this point.
+    </p>
+    <p class="lead">
+      It is up to you to decide whether you want to
+      publicly share it and enable other users to run the notebook on their
+      data. If you want to do so, you can log in and publish it in
+      our collection of <i>Personal Data Notebooks</i>
+    </p>
+    <a
+      {% if client_id %}
+      class="btn btn-primary btn-lg"
+      href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}"
+      {% else %}
+      class="btn btn-default disabled"
+      {% endif %}
+      >
+      Get started
+    </a>
+
+  </div>
+  <div class="col-md-7">
+    <p class='lead'>
+      You want to know how shared notebooks look like?
+      Here are some of the latest notebooks that community members have shared.
+    </p>
+    <div class="table-responsive">
+    <table class='table'>
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for notebook in latest_notebooks%}
+        <tr>
+          <td>
+            <a href="{%url 'notebook-details' notebook.id%}">
+              <code>{{notebook.notebook_name}}</code> <i class="fas fa-info-circle"></i>
+            </a>
+          </td>
+          <td>
+            {%for tag in notebook.get_tags_json%}
+            <span class="label label-primary">{{tag}}</span>
+            {%endfor%}
+            {%for source in notebook.get_data_sources_json%}
+            <span class="label label-info">{{source}}</span>
+            {%endfor%}
+          </td>
+          <td>{{notebook.updated_at|timesince}} ago</td>
+          <td><a href='{% url 'notebook-details' notebook.id %}'><button type="button" class="btn btn-default btn-xs">more details <i class="fas fa-info"></i></button></a></td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
