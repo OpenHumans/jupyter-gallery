@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from . import views_comments
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -26,6 +27,8 @@ urlpatterns = [
          name='delete-notebook'),
     path('export-notebook/<notebook_id>/',
          views.export_notebook,
-         name='export-notebook')
-
+         name='export-notebook'),
+    path('add-comment/<notebook_id>/',
+         views_comments.add_comment,
+         name='add-comment')
 ]

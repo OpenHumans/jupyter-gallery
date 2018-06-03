@@ -41,3 +41,17 @@ class SharedNotebook(models.Model):
 
     def get_data_sources_json(self):
         return json.loads(self.data_sources)
+
+
+class NotebookComment(models.Model):
+    """
+    comments about a given notebook
+    """
+    oh_member = models.ForeignKey(OpenHumansMember, on_delete=models.CASCADE)
+    notebook = models.ForeignKey(SharedNotebook, on_delete=models.CASCADE)
+    comment_text = models.TextField(default='')
+    # Your other fields should go below here
+    created_at = models.DateTimeField(default=arrow.now().format())
+
+    class Meta:
+            ordering = ["created_at"]

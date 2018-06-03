@@ -87,8 +87,10 @@ def dashboard(request):
     context = {
         'oh_member': oh_member,
     }
-    oh_member_data = api.exchange_oauth2_member(oh_member.get_access_token())
-    if 'data' not in oh_member_data.keys():
+    try:
+        oh_member_data = api.exchange_oauth2_member(
+                            oh_member.get_access_token())
+    except:
         messages.error(request, "You need to re-authenticate with Open Humans")
         logout(request)
         return redirect("/")
@@ -106,7 +108,13 @@ def dashboard(request):
 @login_required(login_url='/')
 def add_notebook(request, notebook_id):
     oh_member = request.user.oh_member
-    oh_member_data = api.exchange_oauth2_member(oh_member.get_access_token())
+    try:
+        oh_member_data = api.exchange_oauth2_member(
+                                oh_member.get_access_token())
+    except:
+        messages.error(request, "You need to re-authenticate with Open Humans")
+        logout(request)
+        return redirect("/")
     notebook_name, notebook_url = get_notebook_oh(oh_member_data, notebook_id)
     if request.method == 'POST':
         notebook_content = download_notebook_oh(notebook_url)
@@ -280,6 +288,7 @@ def oh_code_to_member(code):
             except OpenHumansMember.DoesNotExist:
                 oh_member = OpenHumansMember.create(
                     oh_id=oh_id,
+                    oh_username=data['username'],
                     access_token=data['access_token'],
                     refresh_token=data['refresh_token'],
                     expires_in=data['expires_in'])

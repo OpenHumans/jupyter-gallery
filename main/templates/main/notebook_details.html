@@ -2,12 +2,10 @@
 {% block content %}
 {% load static %}
 {% load utilities %}
-<div class='row'>
 <h1>
   Details for <code>{{notebook.notebook_name}}</code>
   <a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'><button type="button" class="btn btn-primary">Open in Personal Data Notebooks <i class="fas fa-external-link-alt"></i></button></a>
 </h1>
-</div>
 <div class="row">
   <div class="col-md-5">
     <h4><i class="fas fa-book-open"></i> Description</h4>
@@ -20,13 +18,46 @@
     {%for source in notebook.get_data_sources_json%}
     <span class="label label-info">{{source}}</span>
     {%endfor%}
-    <h5><i class="far fa-clock"></i> Last Updated</h5>
-    {{notebook.updated_at|timesince}} ago
-    <h5><i class="fas fa-clock"></i> Published</h5>
-    {{notebook.created_at|timesince}} ago
+    <h5>
+      <i class="far fa-clock"></i> Last Updated
+      <small>{{notebook.updated_at|timesince}} ago</small>
+    </h5>
+    <h5>
+      <i class="fas fa-clock"></i> Published
+      <small>{{notebook.created_at|timesince}} ago</small>
+    </h5>
     <p>
       <a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'><button type="button" class="btn btn-primary">Open in Personal Data Notebooks <i class="fas fa-external-link-alt"></i></button></a>
     </p>
+    <h4><i class="far fa-comments"></i> Comments</h4>
+    {%for comment in notebook.notebookcomment_set.all%}
+    <blockquote>
+      <p>{{comment.comment_text}}</p>
+      <footer>
+        <b>
+          <a href="https://www.openhumans.org/member/{{comment.oh_member.oh_username}}/">{{comment.oh_member.oh_username}}</a>
+        </b>, {{comment.created_at|timesince}} ago
+      </footer>
+    </blockquote>
+        {%endfor%}
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'add-comment' notebook.pk %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label>Comment</label>
+          <textarea class="form-control" rows=4 name="comment_text" size=50 type="text"
+            placeholder="Enter your comment here" required></textarea>
+            <p class="help-block">
+            You have tried this notebook and have feedback?
+            Or you have questions for the author? Give it a go!
+            </p>
+        </div>
+        <input type="submit"
+                value="Submit Comment"
+                style="margin-top:6px;"
+                class="btn btn-primary">
+        </form>
+        {%endif%}
   </div>
   <div class="col-md-7">
     <div class="panel panel-default">
