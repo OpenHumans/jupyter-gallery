@@ -1,6 +1,7 @@
 import requests
 from django.conf import settings
 from django.urls import reverse
+from main.models import SharedNotebook
 
 
 def get_notebook_files(oh_member_data):
@@ -31,3 +32,24 @@ def create_notebook_link(notebook, request):
         notebook.notebook_name
     )
     return notebook_link
+
+
+def find_notebook_by_keywords(search_term, search_field=None):
+    notebooks_tag = SharedNotebook.objects.filter(tags__contains=search_term)
+    if search_field == 'tags':
+        return notebooks_tag
+    notebooks_source = SharedNotebook.objects.filter(
+                        data_sources__contains=search_term)
+    if search_field == 'data_sources':
+        return notebooks_source
+    notebooks_user = SharedNotebook.objects.filter(
+                        oh_member__oh_username__contains=search_term)
+    if search_field == 'username':
+        return notebooks_user
+    notebooks_description = SharedNotebook.objects.filter(
+                        description__contains=search_term)
+    notebooks_name = SharedNotebook.objects.filter(
+                        notebook_name__contains=search_term)
+
+    nbs = notebooks_tag | notebooks_source | notebooks_description | notebooks_name | notebooks_user
+    return nbs

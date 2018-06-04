@@ -10,6 +10,7 @@ urlpatterns = [
     path('logout/', views.logout_user, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('notebooks/', views.notebook_index, name='notebook-index'),
+    path('search/', views.search_notebooks, name='search'),
     path('notebook/<notebook_id>/',
          views.notebook_details,
          name='notebook-details'),

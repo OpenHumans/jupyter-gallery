@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% block content %}
 {% load static %}
-<h1>Published Personal Data Notebooks</h1>
+<h1>Results of your search for <i>{{search_term}}</i></h1>
 <div class="table-responsive">
 <table class='table'>
   <thead>
@@ -15,27 +15,27 @@
   </thead>
   <tbody>
   {%for notebook in notebooks%}
-    <tr>
-      <td>
-        <a href="{%url 'notebook-details' notebook.id%}">
-          <code>{{notebook.notebook_name}}</code> <i class="fas fa-info-circle"></i>
-        </a>
-      </td>
-      <td>
-        {%for tag in notebook.get_tags_json%}
-        <a href="{%url 'search' %}?search_term={{tag}}&search_field=tags">
-          <span class="label label-primary">{{tag}}</span></a>
-        {%endfor%}
-        {%for source in notebook.get_data_sources_json%}
-        <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
-        <span class="label label-info">{{source}}</span>
-        </a>
-        {%endfor%}
-      </td>
-      <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></td>
-      <td><a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
-      <td>{{notebook.updated_at|timesince}} ago</td>
-    </tr>
+  <tr>
+    <td>
+      <a href="{%url 'notebook-details' notebook.id%}">
+        <code>{{notebook.notebook_name}}</code> <i class="fas fa-info-circle"></i>
+      </a>
+    </td>
+    <td>
+      {%for tag in notebook.get_tags_json%}
+      <a href="{%url 'search' %}?search_term={{tag}}&search_field=tags">
+        <span class="label label-primary">{{tag}}</span></a>
+      {%endfor%}
+      {%for source in notebook.get_data_sources_json%}
+      <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
+      <span class="label label-info">{{source}}</span>
+      </a>
+      {%endfor%}
+    </td>
+    <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></td>
+    <td><a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
+    <td>{{notebook.updated_at|timesince}} ago</td>
+  </tr>
   {%endfor%}
   </tbody>
 </table>

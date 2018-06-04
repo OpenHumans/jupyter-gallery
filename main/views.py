@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from open_humans.models import OpenHumansMember
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
-from .helpers import create_notebook_link
+from .helpers import create_notebook_link, find_notebook_by_keywords
 from .models import SharedNotebook, NotebookLike
 from django.http import HttpResponse
 from django.urls import reverse
@@ -279,6 +279,32 @@ def like_notebook(request, notebook_id):
                             oh_member=request.user.oh_member)
         like.save()
     return redirect(reverse('notebook-details', args=(notebook_id,)))
+
+
+def search_notebooks(request):
+    if request.method == "POST":
+        search_term = request.POST.get('search_term')
+        print(search_term)
+        print(len(search_term))
+        notebook_list = find_notebook_by_keywords(search_term)
+    else:
+        search_term = request.GET.get('search_term', '')
+        search_field = request.GET.get('search_field', None)
+        notebook_list = find_notebook_by_keywords(search_term, search_field)
+    paginator = Paginator(notebook_list, 20)
+    page = request.GET.get('page')
+    try:
+        notebooks = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        notebooks = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        notebooks = paginator.page(paginator.num_pages)
+    return render(request,
+                  'main/search.html',
+                  {'notebooks': notebooks,
+                   'search_term': search_term})
 
 
 def oh_code_to_member(code):

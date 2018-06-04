@@ -10,7 +10,7 @@
     <!-- Uncomment the following if a favicon is added. -->
     <!-- <link rel="icon" type="image/png" href="images/favicon.png"> -->
 
-    <title>Juno's Personal Data Observatory</title>
+    <title>Juno's Personal Data Exploratory</title>
 
     <!-- Bootstrap via CDN. -->
     <!-- Latest compiled and minified CSS -->
@@ -41,7 +41,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Juno's Personal Data Observatory</a>
+            <a class="navbar-brand" href="/">Juno's Personal Data Exploratory</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -49,10 +49,11 @@
             <ul class="nav navbar-nav">
               <li {% if section == 'explore' %} class="active" {%endif%}><a href="{%url "notebook-index"%}">Explore Notebooks</a></li>
             </ul>
-            <form class="navbar-form navbar-left">
+            <form class="navbar-form navbar-left" action="{% url 'search'%}" method="post">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search Notebook">
+                <input type="text" class="form-control" name="search_term" placeholder="Search Notebook">
               </div>
+            {% csrf_token %}
               <button type="submit" class="btn btn-default">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
@@ -62,7 +63,9 @@
                   <form class='navbar-form navbar-right' action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit" value="Log out" class="btn btn-default">Logout <i class="fas fa-sign-out-alt"></i></button></form>
                 </li>
               {%else%}
+              <li>
                 <a href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}"><button type="button" value="Log out" class="btn btn-default navbar-btn">Log in <i class="fas fa-sign-in-alt"></i></button></a>
+              </li>
               {%endif%}
             </ul>
           </div><!-- /.navbar-collapse -->
@@ -91,7 +94,7 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       <script src="{% static 'js/dashboard.js' %}"></script>
       <script>
-      
+
       </script>
     </div>
   </body>

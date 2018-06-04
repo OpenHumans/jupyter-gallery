@@ -7,6 +7,12 @@
   Details for <code>{{notebook.notebook_name}}</code>
   <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-primary">Open <i class="fas fa-external-link-alt"></i></button></a>
 </h1>
+<h4><small>
+  Published by
+  <a href="{%url 'search' %}?search_term={{notebook.oh_member.oh_username}}&search_field=username">
+  <i>{{notebook.oh_member.oh_username}}</i>
+  </a>
+</small></h4>
 <div class="row">
   <div class="col-md-5">
     <p>
@@ -20,10 +26,14 @@
     <p>
     <h4><i class="fas fa-tags"></i> Tags & Data Sources</h4>
     {%for tag in notebook.get_tags_json%}
+    <a href="{%url 'search' %}?search_term={{tag}}&search_field=tags">
     <span class="label label-primary">{{tag}}</span>
+    </a>
     {%endfor%}
     {%for source in notebook.get_data_sources_json%}
+    <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
     <span class="label label-info">{{source}}</span>
+    </a>
     {%endfor%}
     </p>
     <p>
@@ -57,6 +67,7 @@
                 style="margin-top:6px;"
                 class="btn btn-primary">
         </form>
+      </br>
         {%endif%}
   </div>
   <div class="col-md-7">
