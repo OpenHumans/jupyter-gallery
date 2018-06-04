@@ -9,8 +9,10 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from open_humans.models import OpenHumansMember
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
-from .models import SharedNotebook
+from .helpers import create_notebook_link
+from .models import SharedNotebook, NotebookLike
 from django.http import HttpResponse
+from django.urls import reverse
 import arrow
 import nbconvert
 import nbformat
@@ -221,6 +223,14 @@ def export_notebook(request, notebook_id):
                         content_type='application/json')
 
 
+def open_notebook_hub(request, notebook_id):
+    notebook = SharedNotebook.objects.get(pk=notebook_id)
+    notebook.views += 1
+    notebook.save()
+    notebook_link = create_notebook_link(notebook, request)
+    return redirect(notebook_link)
+
+
 def notebook_index(request):
     notebook_list = SharedNotebook.objects.all().order_by('-updated_at')
     paginator = Paginator(notebook_list, 20)
@@ -241,6 +251,10 @@ def notebook_index(request):
 
 def notebook_details(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
+    liked = False
+    if request.user.is_authenticated:
+        if notebook.notebooklike_set.filter(oh_member=request.user.oh_member):
+            liked = True
     format_notebook = nbformat.reads(notebook.notebook_content,
                                      as_version=nbformat.NO_CONVERT)
     html_exporter = nbconvert.HTMLExporter()
@@ -249,7 +263,22 @@ def notebook_details(request, notebook_id):
     return render(request,
                   'main/notebook_details.html',
                   {'notebook': notebook,
-                   'notebook_preview': body})
+                   'notebook_preview': body,
+                   'liked': liked})
+
+
+@login_required(login_url='/')
+def like_notebook(request, notebook_id):
+    notebook = SharedNotebook.objects.get(pk=notebook_id)
+    if notebook.notebooklike_set.filter(oh_member=request.user.oh_member):
+        like = NotebookLike.objects.get(oh_member=request.user.oh_member,
+                                        notebook=notebook)
+        like.delete()
+    else:
+        like = NotebookLike(notebook=notebook,
+                            oh_member=request.user.oh_member)
+        like.save()
+    return redirect(reverse('notebook-details', args=(notebook_id,)))
 
 
 def oh_code_to_member(code):

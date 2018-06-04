@@ -21,6 +21,7 @@ class SharedNotebook(models.Model):
     description = models.TextField(default='')
     tags = models.TextField(default='')
     data_sources = models.TextField(default='')
+    views = models.IntegerField(default=0)
     # Your other fields should go below here
     updated_at = models.DateTimeField(
                             default=(arrow.now() - timedelta(days=7)).format())
@@ -50,8 +51,16 @@ class NotebookComment(models.Model):
     oh_member = models.ForeignKey(OpenHumansMember, on_delete=models.CASCADE)
     notebook = models.ForeignKey(SharedNotebook, on_delete=models.CASCADE)
     comment_text = models.TextField(default='')
-    # Your other fields should go below here
     created_at = models.DateTimeField(default=arrow.now().format())
 
     class Meta:
             ordering = ["created_at"]
+
+
+class NotebookLike(models.Model):
+    """
+    like a given notebook
+    """
+    oh_member = models.ForeignKey(OpenHumansMember, on_delete=models.CASCADE)
+    notebook = models.ForeignKey(SharedNotebook, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=arrow.now().format())

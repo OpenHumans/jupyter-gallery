@@ -9,4 +9,5 @@ $(document).ready(function(){
       //document.getElementById("notebook_filler").innerHTML = "new content"
         ///alert('The modal will show'+nbid);
     });
+    $('[data-toggle="tooltip"]').tooltip();
 });

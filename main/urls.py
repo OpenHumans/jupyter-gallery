@@ -13,6 +13,9 @@ urlpatterns = [
     path('notebook/<notebook_id>/',
          views.notebook_details,
          name='notebook-details'),
+    path('open-notebook/<notebook_id>/',
+         views.open_notebook_hub,
+         name='open-notebook'),
     path('add-notebook-gallery/<notebook_id>/',
          views.add_notebook,
          name='add-notebook-gallery'),
@@ -30,5 +33,8 @@ urlpatterns = [
          name='export-notebook'),
     path('add-comment/<notebook_id>/',
          views_comments.add_comment,
-         name='add-comment')
+         name='add-comment'),
+    path('like-notebook/<notebook_id>/',
+         views.like_notebook,
+         name='like-notebook')
 ]

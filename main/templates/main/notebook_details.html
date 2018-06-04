@@ -2,32 +2,32 @@
 {% block content %}
 {% load static %}
 {% load utilities %}
+
 <h1>
   Details for <code>{{notebook.notebook_name}}</code>
-  <a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'><button type="button" class="btn btn-primary">Open in Personal Data Notebooks <i class="fas fa-external-link-alt"></i></button></a>
+  <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-primary">Open <i class="fas fa-external-link-alt"></i></button></a>
 </h1>
 <div class="row">
   <div class="col-md-5">
+    <p>
     <h4><i class="fas fa-book-open"></i> Description</h4>
     {{notebook.description|markdown}}
-    <h4><i class="fas fa-tags"></i> Tags</h4>
+    </p>
+    <h3>
+      <a data-toggle="tooltip" data-container='body' data-placement="top" title='Number of views'><small><i class="fas fa-eye"></i> {{notebook.views}}</small></a>
+      <a href ="{%url 'like-notebook' notebook.id%}" data-toggle="tooltip" data-container='body' data-placement="top" title='Number of Likes'><small><i class="fa{%if liked%}s{%else%}r{%endif%} fa-heart"></i> {{notebook.notebooklike_set.all|length}}</small></a>
+    </h3>
+    <p>
+    <h4><i class="fas fa-tags"></i> Tags & Data Sources</h4>
     {%for tag in notebook.get_tags_json%}
     <span class="label label-primary">{{tag}}</span>
     {%endfor%}
-    <h4><i class="fas fa-table"></i> Data Sources</h4>
     {%for source in notebook.get_data_sources_json%}
     <span class="label label-info">{{source}}</span>
     {%endfor%}
-    <h5>
-      <i class="far fa-clock"></i> Last Updated
-      <small>{{notebook.updated_at|timesince}} ago</small>
-    </h5>
-    <h5>
-      <i class="fas fa-clock"></i> Published
-      <small>{{notebook.created_at|timesince}} ago</small>
-    </h5>
+    </p>
     <p>
-      <a href='{{JH_URL}}/gallery-import?notebook_location={{base_url}}{% url 'export-notebook' notebook.id %}&notebook_name={{notebook.notebook_name}}'><button type="button" class="btn btn-primary">Open in Personal Data Notebooks <i class="fas fa-external-link-alt"></i></button></a>
+      <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-primary">Open in Personal Data Notebooks <i class="fas fa-external-link-alt"></i></button></a>
     </p>
     <h4><i class="far fa-comments"></i> Comments</h4>
     {%for comment in notebook.notebookcomment_set.all%}
@@ -62,7 +62,7 @@
   <div class="col-md-7">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Notebook preview</h3>
+        <h3 class="panel-title">Notebook <div style='float: right;'><small><i class="far fa-clock"></i> Last updated {{notebook.updated_at|timesince}} ago</small></style></h3>
       </div>
       <div class="panel-body">
         {{notebook_preview|safe}}

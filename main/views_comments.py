@@ -1,10 +1,9 @@
 import logging
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse
 from .models import SharedNotebook, NotebookComment
-from django.http import HttpResponse
 
 import arrow
 # Set up logging.
