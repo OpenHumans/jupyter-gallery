@@ -337,7 +337,7 @@ def oh_code_to_member(code):
             oh_memberdata = api.exchange_oauth2_member(
                 data['access_token'])
             oh_id = oh_memberdata['project_member_id']
-            oh_username = oh_member_data['username']
+            oh_username = oh_memberdata['username']
             try:
                 oh_member = OpenHumansMember.objects.get(oh_id=oh_id)
                 logger.debug('Member {} re-authorized.'.format(oh_id))
