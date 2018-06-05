@@ -2,3 +2,10 @@
     max-width:550px;
     margin: auto;
   }
+
+
+.dataframe {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
