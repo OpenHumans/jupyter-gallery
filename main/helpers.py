@@ -2,6 +2,7 @@ import requests
 from django.conf import settings
 from django.urls import reverse
 from main.models import SharedNotebook
+import re
 
 
 def get_notebook_files(oh_member_data):
@@ -25,7 +26,7 @@ def create_notebook_link(notebook, request):
     base_url = request.build_absolute_uri("/").rstrip('/')
     jupyterhub_url = settings.JUPYTERHUB_BASE_URL
     export_url = reverse('export-notebook', args=(notebook.id,))
-    notebook_link = '{}/gallery-import?notebook_location={}{}&notebook_name={}'.format(
+    notebook_link = '{}/notebook-import?notebook_location={}{}&notebook_name={}'.format(
         jupyterhub_url,
         base_url,
         export_url,
@@ -53,3 +54,16 @@ def find_notebook_by_keywords(search_term, search_field=None):
 
     nbs = notebooks_tag | notebooks_source | notebooks_description | notebooks_name | notebooks_user
     return nbs
+
+
+def suggest_data_sources(notebook_content):
+    print(notebook_content)
+    potential_sources = re.findall("direct-sharing-\d+", str(notebook_content))
+    if potential_sources:
+        response = requests.get(
+            'https://www.openhumans.org/api/public-data/members-by-source/')
+        source_names = {i['source']: i['name'] for i in response.json()}
+        suggested_sources = [source_names[i] for i in potential_sources
+                          if i in source_names]
+        return ",".join(suggested_sources)
+    return ""
