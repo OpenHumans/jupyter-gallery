@@ -10,6 +10,7 @@ from open_humans.models import OpenHumansMember
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
 from .helpers import create_notebook_link, find_notebook_by_keywords
+from .helpers import suggest_data_sources
 from .models import SharedNotebook, NotebookLike
 from django.http import HttpResponse
 from django.urls import reverse
@@ -159,11 +160,13 @@ def add_notebook(request, notebook_id):
                        'notebook_id': str(notebook_id),
                        'edit': True}
         else:
+            notebook_content = download_notebook_oh(notebook_url)
+            suggested_sources = suggest_data_sources(notebook_content)
             context = {'description': '',
                        'name': notebook_name,
                        'notebook_id': str(notebook_id),
                        'tags': '',
-                       'data_sources': ''}
+                       'data_sources': suggested_sources}
         return render(request, 'main/add_notebook.html', context=context)
 
 

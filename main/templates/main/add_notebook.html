@@ -34,6 +34,12 @@
         value="{{data_sources}}"
         placeholder="Enter a comma-separated list of data sources your notebook uses" required>
       <p class="help-block">
+        {%if not edit%}
+        <b>
+          We have tried to extract the names of all <i>Open Humans</i> data sources we found in your notebook.
+          Please check whether these are correct.
+        </b>
+        {%endif%}
       Please specify the data sources your notebook uses. This makes it easier for people to find notebooks relevant for them.
       </p>
     </div>
