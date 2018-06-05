@@ -334,8 +334,10 @@ def oh_code_to_member(code):
         data = req.json()
 
         if 'access_token' in data:
-            oh_id = api.exchange_oauth2_member(
-                data['access_token'])['project_member_id']
+            oh_memberdata = api.exchange_oauth2_member(
+                data['access_token'])
+            oh_id = oh_memberdata['project_member_id']
+            oh_username = oh_member_data['username']
             try:
                 oh_member = OpenHumansMember.objects.get(oh_id=oh_id)
                 logger.debug('Member {} re-authorized.'.format(oh_id))
@@ -346,7 +348,7 @@ def oh_code_to_member(code):
             except OpenHumansMember.DoesNotExist:
                 oh_member = OpenHumansMember.create(
                     oh_id=oh_id,
-                    oh_username=data['username'],
+                    oh_username=oh_username,
                     access_token=data['access_token'],
                     refresh_token=data['refresh_token'],
                     expires_in=data['expires_in'])
