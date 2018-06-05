@@ -70,11 +70,16 @@
                     <button type="submit" value="Log out" class="btn btn-default">Logout <i class="fas fa-sign-out-alt"></i></button>
                   </form>
               {%else%}
-              <ul class="nav navbar-nav navbar-right">
-                <li>
-                  <a href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}"><button type="button" value="Log out" class="btn btn-default navbar-btn">Log in <i class="fas fa-sign-in-alt"></i></button></a>
-                </li>
-              </ul>
+                  <form class='navbar-form navbar-right'
+                        action="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/"
+                        method="get">
+                    <div class="form-group">
+                      <input type="hidden" name="client_id" value="{{ client_id }}" />
+                      <input type="hidden" name="response_type" value="code" />
+                      <input type="hidden" name="redirect_uri" value="{{ redirect_uri }}" />
+                    </div>
+                    <button type="submit" value="Log In" class="btn btn-default">Log In <i class="fas fa-sign-in-alt"></i></button>
+                  </form>
               {%endif%}
           </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
