@@ -26,7 +26,7 @@ def create_notebook_link(notebook, request):
     base_url = request.build_absolute_uri("/").rstrip('/')
     jupyterhub_url = settings.JUPYTERHUB_BASE_URL
     export_url = reverse('export-notebook', args=(notebook.id,))
-    notebook_link = '{}/gallery-import?notebook_location={}{}&notebook_name={}'.format(
+    notebook_link = '{}/notebook-import?notebook_location={}{}&notebook_name={}'.format(
         jupyterhub_url,
         base_url,
         export_url,
