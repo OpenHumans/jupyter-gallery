@@ -21,7 +21,11 @@
     </p>
     <h3>
       <a data-toggle="tooltip" data-container='body' data-placement="top" title='Number of views'><small><i class="fas fa-eye"></i> {{notebook.views}}</small></a>
+      {%if request.user.is_authenticated %}
       <a href ="{%url 'like-notebook' notebook.id%}" data-toggle="tooltip" data-container='body' data-placement="top" title='Number of Likes. Press to {%if liked%}un{%endif%}like.'><small><i class="fa{%if liked%}s{%else%}r{%endif%} fa-heart"></i> {{notebook.notebooklike_set.all|length}}</small></a>
+      {%else%}
+      <a data-toggle="tooltip" data-container='body' data-placement="top" title='Number of Likes'><small><i class="far fa-heart"></i> {{notebook.notebooklike_set.all|length}}</small></a>
+      {%endif%}
     </h3>
     <p>
     <h4><i class="fas fa-tags"></i> Tags & Data Sources</h4>
