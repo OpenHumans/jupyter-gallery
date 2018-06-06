@@ -53,6 +53,19 @@ def index(request):
         return render(request, 'main/index.html', context=context)
 
 
+def about(request):
+    return render(request, 'main/about.html', {'section': 'about'})
+
+
+@login_required(login_url="/")
+def delete_user(request):
+    if request.method == "POST":
+        request.user.delete()
+        messages.info(request, "Your account was deleted!")
+        logout(request)
+        return redirect('index')
+
+
 def complete(request):
     """
     Receive user from Open Humans. Store data, start upload.

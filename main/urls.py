@@ -5,7 +5,9 @@ from . import views_comments
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('about/', views.about, name='about'),
     path('complete/', views.complete, name='complete'),
+    path('delete-user/', views.delete_user, name='delete-user'),
     path('shared/', views.shared, name='shared'),
     path('logout/', views.logout_user, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),

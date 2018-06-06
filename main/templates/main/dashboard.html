@@ -1,9 +1,9 @@
 {% extends 'main/base.html' %}
 {% block content %}
 {% load static %}
-    <h1>Your Notebook Gallery</h1>
+    <h1>Your Notebooks & Account</h1>
     <p class="lead">
-      See which notebooks you have shared and can share.
+    </br>See which notebooks you have shared and can share.
     </p>
     <div class="row">
       <div class="col-md-4">
@@ -63,6 +63,7 @@
           No data available yet.
 
         {%endif%}
+        <a href="{% url 'delete-user'%}"><button type="button" class="btn btn-danger">Delete account & all notebooks <i class="far fa-trash-alt"></i></button></a>
       </div>
     </div>
 

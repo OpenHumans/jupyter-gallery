@@ -1,0 +1,140 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5">
+        <h2>About</h2>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Who's running the <i>Exploratory</i>?</h3>
+          </div>
+          <div class="panel-body">
+          <p>
+            This project is run by
+            <a href="https://tzovar.as/">Bastian Greshake Tzovaras</a>.
+            You can always get in touch with him via <a href="mailto:bgreshake@googlemail.com">email</a> at <code>bgreshake@googlemail.com</code>
+            or on <i><a href="https://twitter.com/gedankenstuecke">Twitter</a></i> <code>@gedankenstuecke</code>.
+          </p>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Which data do you store?</h3>
+          </div>
+          <div class="panel-body">
+          <p>
+            We store different kinds of data depending on whether you are accessing this app as a guest
+            or if you are being logged in with your Open Humans account:
+          </p>
+          <ol>
+            <li>Generally, our hoster <i><a href='https://www.heroku.com'>Heroku</a></i> stores and gives us access to</li>
+            <ol>
+              <li>IP addresses used to access this app</li>
+              <li>the sub-pages visited on this app</li>
+              <li>(Both are stored for up to a week)</li>
+            </ol>
+            <li>If you're logged in with your <i>Open Humans</i> account we also store the following:</li>
+            <ol>
+              <li>your Open Humans username</li>
+              <li>the authentication credentials that allow us to look at Notebooks you have put into your Open Humans account</li>
+              <li>the notebooks that you have shared on this app, along the description/tags/sources you enter</li>
+              <li>if you like/comment on notebooks we store this data as well</li>
+            </ol>
+          </ol>
+          <p>
+            While you have to log-in through your Open Humans account to share your own notebooks, you can always use this site
+            without registering to just open notebooks. You can always delete your account
+            and all associated data from the <a href="{%url 'dashboard'%}"><i>Dashboard</i></a>.
+          </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <h2>FAQ</h2>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">How do I share a notebook?</h3>
+          </div>
+          <div class="panel-body">
+            <p>
+              Sharing a notebook is a two-step process starting from
+              <a href='notebooks.openhumans.org'><code>notebooks.openhumans.org</code></a> that involves first uploading
+              it to Open Humans and then sharing it here:
+            </p>
+            <ol>
+            <li>You can upload a notebook to Open Humans right from open notebooks on
+            <code>notebooks.openhumans.org</code> by</li>
+            <ol>
+              <li>clicking on the <code>File</code> menu,</li>
+              <li>selecting <code>Share Notebook</code>,</li>
+              <li>and clicking <code>Upload to Open Humans</code></li>
+            </ol>
+            <li>Post-sharing you will be taken back to the <i>Exploratory</i>. After you have logged in you can share by:</li>
+            <ol>
+              <li>Selecting shareable notebooks from the <a href="{%url 'dashboard'%}">left side of your <i>dashboard</i></a>.</li>
+              <li>Click <code>add/replace</code> to start the import of the notebook.
+                (If you have previously shared a notebook of the same name the existing one will be updated)</li>
+              <li>In the form that will appear you should give your notebook a <code>Description</code>,
+                along with some <code>Tags</code> that describe your notebook. The <code>Data sources</code> your
+              notebook requires should have been automatically identified. If not, you can manually add them.</li>
+              <li>Press <code>Submit Notebook</code> and you are done. Your notebook is now shared on the
+                <i><a href="{%url 'notebook-index'%}">list of notebooks</a></i>.</li>
+            </ol>
+          </ol>
+          <p>Check out this quick GIF below to see how it works in practice:</p>
+          <img style='height: 100%; width: 100%; object-fit: contain' src="{% static 'aboutgifs/sharing.gif' %}"/>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">How do I run one of the notebooks?</h3>
+          </div>
+          <div class="panel-body">
+          <p>
+            Getting a notebook copied into your own <code>notebooks.openhumans.org</code> structure is a simple click.
+            When you see a notebook on the <i>Exploratory</i> that you'd like to run just press the <code>open as notebook</code> or <code>Open</code> buttons
+            which are on <i><a href="{%url 'notebook-index'%}">list of notebooks</a></i>. If your notebook directory already contains a notebook of the same
+            name it will make sure to append the current date/time to the newly imported notebook, as to not overwrite the existing one.
+          </p>
+          <p>
+            See the GIF below for an example:
+          </p>
+          <img style='height: 100%; width: 100%; object-fit: contain' src="{% static 'aboutgifs/open.gif' %}"/>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Can I edit/delete notebooks I've shared?</h3>
+          </div>
+          <div class="panel-body">
+          <p>
+            Yes, you can. Head to your <a href="{%url 'dashboard'%}"><i>Dashboard</i></a> (<code>My Notebooks</code> in the menu bar above).
+            There you can <code>delete</code> a notebook or select <code>edit description</code> to change the tags/sources/description of a notebook you have published.
+          </p>
+          <p>
+            Note that the <code>edit description</code> does not give a way to edit the notebook itself, but just the associated metadata. To also replace the code notebook itself
+            you will have to replace it as outlined above in <i>How do I share a notebook?</i>
+          </p>
+          <img style='height: 100%; width: 100%; object-fit: contain' src="{% static 'aboutgifs/edit.png' %}"/>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Can I use the exploratory for notebooks not hosted on <i>Open Humans</i>?</h3>
+          </div>
+          <div class="panel-body">
+          <p>
+            Unfortunately not at this point. But if you run your own JupyterHub installation you can easily set up your
+            own exploratory for it. The required Jupyter extensions and the exploratory are all open source.
+            <a href="https://github.com/gedankenstuecke/jupyter-gallery">Read more about it on the
+            GitHub repository</a> for the exploratory!
+          </p>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}
