@@ -30,7 +30,6 @@
   </head>
 
   <body>
-    <div class="container">
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
@@ -43,7 +42,7 @@
             </button>
             <a class="navbar-brand" href="/">
               <img alt="Brand" height=25 width=25 src="{% static 'juno.png' %}"/></a>
-              <a class="navbar-brand" href="/">Juno's Personal Data Exploratory</a>
+              <a class="navbar-brand" href="/">Juno's Exploratory</a>
 
           </div>
 
@@ -88,6 +87,8 @@
         </div><!-- /.container-fluid -->
       </nav>
 
+
+    <div class="container">
       {% if messages %}
 
         {% for message in messages %}
@@ -97,10 +98,9 @@
         {% endfor %}
 
       {% endif %}
-
       {% block content %}
       {% endblock %}
-
+    </div>
       <!-- Bootstrap core JavaScript
       ================================================== -->
       <!-- Placed at the end of the document so the pages load faster -->
@@ -112,7 +112,6 @@
       <script>
 
       </script>
-    </div>
     <footer class="footer">
      <div class="fcontainer">
        <p class="text-muted">

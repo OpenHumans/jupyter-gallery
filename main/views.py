@@ -59,11 +59,10 @@ def about(request):
 
 @login_required(login_url="/")
 def delete_user(request):
-    if request.method == "POST":
-        request.user.delete()
-        messages.info(request, "Your account was deleted!")
-        logout(request)
-        return redirect('index')
+    request.user.delete()
+    messages.info(request, "Your account was deleted!")
+    logout(request)
+    return redirect('index')
 
 
 def complete(request):
