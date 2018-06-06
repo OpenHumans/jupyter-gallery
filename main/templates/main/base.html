@@ -63,7 +63,7 @@
             </ul>
               {% if request.user.is_authenticated %}
               <ul class="nav navbar-nav">
-                <li {% if section == 'dashboard' %} class="active" {%endif%}><a href="{% url 'dashboard'%}">Account</a></li>
+                <li {% if section == 'dashboard' %} class="active" {%endif%}><a href="{% url 'dashboard'%}">Dashboard</a></li>
               </ul>
                   <form class='navbar-form navbar-right' action="{% url 'logout' %}" method="post">
                     <div class="form-group">
