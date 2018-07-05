@@ -27,6 +27,10 @@ class SharedNotebook(models.Model):
                             default=(arrow.now() - timedelta(days=7)).format())
     created_at = models.DateTimeField(
                             default=(arrow.now() - timedelta(days=7)).format())
+    master_notebook = models.ForeignKey('self',
+                                        on_delete=models.SET_NULL,
+                                        blank=True,
+                                        null=True)
 
     def get_tags(self):
         return ",".join(json.loads(self.tags)) if self.tags else ''
@@ -42,6 +46,11 @@ class SharedNotebook(models.Model):
 
     def get_data_sources_json(self):
         return json.loads(self.data_sources)
+
+    def delete(self, *args, **kwargs):
+        nb_name = self.notebook_name
+        super().delete(*args, **kwargs)  # Call the "real" save() method.
+        # update_master_associations(nb_name)
 
 
 class NotebookComment(models.Model):
