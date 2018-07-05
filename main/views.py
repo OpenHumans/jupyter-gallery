@@ -10,7 +10,7 @@ from open_humans.models import OpenHumansMember
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
 from .helpers import create_notebook_link, find_notebook_by_keywords
-from .helpers import suggest_data_sources
+from .helpers import suggest_data_sources, identify_master_notebook
 from .models import SharedNotebook, NotebookLike
 from django.http import HttpResponse
 from django.urls import reverse
@@ -147,6 +147,8 @@ def add_notebook(request, notebook_id):
         notebook.notebook_content = notebook_content.decode()
         notebook.updated_at = arrow.now().format()
         notebook.oh_member = oh_member
+        notebook.master_notebook = identify_master_notebook(notebook_name,
+                                                            oh_member)
         if created:
             notebook.created_at = arrow.now().format()
             messages.info(request, 'Your notebook {} has been shared!'.format(
