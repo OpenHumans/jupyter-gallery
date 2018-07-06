@@ -269,6 +269,12 @@ def notebook_index(request):
 
 def notebook_details(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
+    if notebook.master_notebook:
+        other_notebooks = notebook.master_notebook.sharednotebook_set.exclude(
+            pk=notebook.id)
+    else:
+        other_notebooks = notebook.sharednotebook_set.exclude(
+            pk=notebook.id)
     liked = False
     if request.user.is_authenticated:
         if notebook.notebooklike_set.filter(oh_member=request.user.oh_member):
@@ -281,6 +287,7 @@ def notebook_details(request, notebook_id):
     return render(request,
                   'main/notebook_details.html',
                   {'notebook': notebook,
+                   'other_notebooks': other_notebooks,
                    'notebook_preview': body,
                    'liked': liked})
 

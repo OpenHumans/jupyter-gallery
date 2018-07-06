@@ -52,7 +52,8 @@
           <tbody>
           {%for notebook in existing_notebooks%}
             <tr>
-              <td><code>{{notebook.notebook_name}}</code></td>
+              <td><a href="{%url 'notebook-details' notebook.id%}"><code>{{notebook.notebook_name}}</code><i class="fas fa-info-circle"></i>
+            </a></td>
               <td><a href="{% url 'edit-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">edit description <i class="far fa-edit"></i></button></a></td>
               <td><a href="{% url 'delete-notebook' notebook.id%}"><button type="button" class="btn btn-default btn-xs">delete <i class="far fa-trash-alt"></i></button></a></td>
               <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></td>
