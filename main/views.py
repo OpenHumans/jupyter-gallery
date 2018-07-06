@@ -45,8 +45,8 @@ def index(request):
     if request.user.is_authenticated:
         return redirect('/notebooks')
     else:
-        latest_notebooks = SharedNotebook.objects.all(
-            ).order_by('-updated_at')[:10]
+        latest_notebooks = SharedNotebook.objects.filter(
+            master_notebook=None).order_by('-updated_at')[:10]
         context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
                    'latest_notebooks': latest_notebooks}
 
@@ -249,7 +249,8 @@ def open_notebook_hub(request, notebook_id):
 
 
 def notebook_index(request):
-    notebook_list = SharedNotebook.objects.all().order_by('-updated_at')
+    notebook_list = SharedNotebook.objects.filter(
+        master_notebook=None).order_by('-updated_at')
     paginator = Paginator(notebook_list, 20)
     page = request.GET.get('page')
     try:
