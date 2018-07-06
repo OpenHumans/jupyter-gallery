@@ -47,11 +47,6 @@ class SharedNotebook(models.Model):
     def get_data_sources_json(self):
         return json.loads(self.data_sources)
 
-    def delete(self, *args, **kwargs):
-        nb_name = self.notebook_name
-        super().delete(*args, **kwargs)  # Call the "real" save() method.
-        # update_master_associations(nb_name)
-
 
 class NotebookComment(models.Model):
     """
