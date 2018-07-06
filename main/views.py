@@ -10,7 +10,7 @@ from open_humans.models import OpenHumansMember
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
 from .helpers import create_notebook_link, find_notebook_by_keywords
-from .helpers import suggest_data_sources
+from .helpers import suggest_data_sources, identify_master_notebook
 from .models import SharedNotebook, NotebookLike
 from django.http import HttpResponse
 from django.urls import reverse
@@ -45,8 +45,8 @@ def index(request):
     if request.user.is_authenticated:
         return redirect('/notebooks')
     else:
-        latest_notebooks = SharedNotebook.objects.all(
-            ).order_by('-updated_at')[:10]
+        latest_notebooks = SharedNotebook.objects.filter(
+            master_notebook=None).order_by('-updated_at')[:10]
         context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
                    'latest_notebooks': latest_notebooks}
 
@@ -147,6 +147,8 @@ def add_notebook(request, notebook_id):
         notebook.notebook_content = notebook_content.decode()
         notebook.updated_at = arrow.now().format()
         notebook.oh_member = oh_member
+        notebook.master_notebook = identify_master_notebook(notebook_name,
+                                                            oh_member)
         if created:
             notebook.created_at = arrow.now().format()
             messages.info(request, 'Your notebook {} has been shared!'.format(
@@ -247,7 +249,8 @@ def open_notebook_hub(request, notebook_id):
 
 
 def notebook_index(request):
-    notebook_list = SharedNotebook.objects.all().order_by('-updated_at')
+    notebook_list = SharedNotebook.objects.filter(
+        master_notebook=None).order_by('-updated_at')
     paginator = Paginator(notebook_list, 20)
     page = request.GET.get('page')
     try:
@@ -266,6 +269,12 @@ def notebook_index(request):
 
 def notebook_details(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
+    if notebook.master_notebook:
+        other_notebooks = notebook.master_notebook.sharednotebook_set.exclude(
+            pk=notebook.id)
+    else:
+        other_notebooks = notebook.sharednotebook_set.exclude(
+            pk=notebook.id)
     liked = False
     if request.user.is_authenticated:
         if notebook.notebooklike_set.filter(oh_member=request.user.oh_member):
@@ -278,6 +287,7 @@ def notebook_details(request, notebook_id):
     return render(request,
                   'main/notebook_details.html',
                   {'notebook': notebook,
+                   'other_notebooks': other_notebooks,
                    'notebook_preview': body,
                    'liked': liked})
 

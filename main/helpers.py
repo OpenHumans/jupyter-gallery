@@ -65,5 +65,15 @@ def suggest_data_sources(notebook_content):
         source_names = {i['source']: i['name'] for i in response.json()}
         suggested_sources = [source_names[i] for i in potential_sources
                           if i in source_names]
+        suggested_sources = list(set(suggested_sources))
         return ",".join(suggested_sources)
     return ""
+
+
+def identify_master_notebook(notebook_name, oh_member):
+    other_notebooks = SharedNotebook.objects.filter(
+                        notebook_name=notebook_name).exclude(
+                        oh_member=oh_member).order_by('created_at')
+    if other_notebooks:
+        return other_notebooks[0]
+    return None

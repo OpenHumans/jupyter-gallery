@@ -27,6 +27,10 @@ class SharedNotebook(models.Model):
                             default=(arrow.now() - timedelta(days=7)).format())
     created_at = models.DateTimeField(
                             default=(arrow.now() - timedelta(days=7)).format())
+    master_notebook = models.ForeignKey('self',
+                                        on_delete=models.SET_NULL,
+                                        blank=True,
+                                        null=True)
 
     def get_tags(self):
         return ",".join(json.loads(self.tags)) if self.tags else ''

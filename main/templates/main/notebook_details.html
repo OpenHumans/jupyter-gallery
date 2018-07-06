@@ -12,6 +12,10 @@
   <a href="{%url 'search' %}?search_term={{notebook.oh_member.oh_username}}&search_field=username">
   <i>{{notebook.oh_member.oh_username}}</i>
   </a>
+  {%if notebook.master_notebook%}
+  (This notebook is an edited copy of
+    <a href="{%url 'notebook-details' notebook.master_notebook.id%}">{{notebook.master_notebook.oh_member.oh_username}}'s notebook</a>)
+  {%endif%}
 </small></h4>
 <div class="row">
   <div class="col-md-5">
@@ -43,6 +47,15 @@
     <p>
       <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-primary">Open in Personal Data Notebooks <i class="fas fa-external-link-alt"></i></button></a>
     </p>
+    {% if notebook.master_notebook or other_notebooks%}
+    <h4><i class="far fa-copy"></i> Other Notebook Versions</h4>
+    <ul>
+      {%if notebook.master_notebook%}<li><a href="{%url 'notebook-details' notebook.master_notebook.id%}">{{notebook.master_notebook.oh_member.oh_username}}'s notebook</a> (original notebook)</li>{%endif%}
+      {%for other_notebook in other_notebooks%}
+      <li><a href="{%url 'notebook-details' other_notebook.id%}">{{other_notebook.oh_member.oh_username}}'s notebook</a></li>
+      {%endfor%}
+    </ul>
+    {%endif%}
     <h4><i class="far fa-comments"></i> Comments</h4>
     {%for comment in notebook.notebookcomment_set.all%}
     <blockquote>
