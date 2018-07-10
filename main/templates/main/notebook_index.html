@@ -32,7 +32,7 @@
       <td>
         <a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></br>
       <td>
-        <i class="fas fa-eye"></i> {{notebook.views}}
+        <i class="fas fa-eye"></i> {{notebook.views}}</br>
         <i class="far fa-heart"></i> {{notebook.notebooklike_set.all|length}}
       </td>
       <td>{{notebook.updated_at|timesince}} ago</td>
