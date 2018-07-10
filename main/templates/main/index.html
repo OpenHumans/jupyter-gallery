@@ -54,7 +54,7 @@
           <thead>
             <tr>
               <th>Title</th>
-              <th>Tags / Data sources</th>
+              <th>Data sources</th>
               <th>Updated</th>
               <th></th>
             </tr>
@@ -69,10 +69,6 @@
                 </a>
               </td>
               <td>
-                {%for tag in notebook.get_tags_json%}
-                <a href="{%url 'search' %}?search_term={{tag}}&search_field=tags">
-                  <span class="label label-primary">{{tag}}</span></a>
-                {%endfor%}</br>
                 {%for source in notebook.get_data_sources_json%}
                 <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
                 <span class="label label-info">{{source}}</span>

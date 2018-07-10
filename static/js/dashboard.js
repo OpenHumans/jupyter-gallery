@@ -6,6 +6,8 @@ $(document).ready(function(){
       console.log($('#nbtitle_fill').html);
       $('#notebook_filler').load('/render-notebook/'+nbid);
       $('#nbtitle_fill').html(nbtitle);
+      $('#nbopenId').attr("href", '/open-notebook/'+nbid);
+      $('#detailId').attr("href", '/notebook/'+nbid);
       //document.getElementById("notebook_filler").innerHTML = "new content"
         ///alert('The modal will show'+nbid);
     });
