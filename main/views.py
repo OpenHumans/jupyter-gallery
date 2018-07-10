@@ -121,6 +121,25 @@ def dashboard(request):
 
 
 @login_required(login_url='/')
+def likes(request):
+    oh_member = request.user.oh_member
+    liked_notebook_list = oh_member.notebooklike_set.all().order_by('-created_at')
+    paginator = Paginator(liked_notebook_list, 20)
+    page = request.GET.get('page')
+    try:
+        liked_notebooks = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        liked_notebooks = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        liked_notebooks = paginator.page(paginator.num_pages)
+    return render(request, 'main/likes.html',
+                  context={'liked_notebooks': liked_notebooks,
+                           'section': 'likes'})
+
+
+@login_required(login_url='/')
 def add_notebook(request, notebook_id):
     oh_member = request.user.oh_member
     try:
@@ -301,7 +320,8 @@ def like_notebook(request, notebook_id):
         like.delete()
     else:
         like = NotebookLike(notebook=notebook,
-                            oh_member=request.user.oh_member)
+                            oh_member=request.user.oh_member,
+                            created_at=arrow.now().format())
         like.save()
     return redirect(reverse('notebook-details', args=(notebook_id,)))
 
