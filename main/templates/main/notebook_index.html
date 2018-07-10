@@ -7,7 +7,7 @@
     <thead>
       <tr>
         <th>Notebook</th>
-        <th>Tags & Data Sources</th>
+        <th>Data Sources</th>
         <th></th>
         <th></th>
         <th></th>
@@ -24,10 +24,6 @@
         </a>
       </td>
       <td>
-        {%for tag in notebook.get_tags_json%}
-        <a href="{%url 'search' %}?search_term={{tag}}&search_field=tags">
-          <span class="label label-primary">{{tag}}</span></a>
-        {%endfor%}</br>
         {%for source in notebook.get_data_sources_json%}
         <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
         <span class="label label-info">{{source}}</span>
@@ -36,7 +32,6 @@
       </td>
       <td>
         <a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></br>
-        <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
       <td>
         <i class="fas fa-eye"></i> {{notebook.views}}
       </td>
@@ -74,6 +69,8 @@
         <div id='notebook_filler'></div>
       </div>
       <div class="modal-footer">
+        <a id='nbopenId' href='/test2' class="btn btn-default">open as notebook <i class="fas fa-external-link-alt"></i></a>
+        <a id='detailId' href='/test' class="btn btn-default">more details <i class="fas fa-info-circle"></i></a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
