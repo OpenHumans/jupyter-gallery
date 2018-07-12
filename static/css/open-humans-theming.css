@@ -1,0 +1,107 @@
+
+  /* Text fonts and styles
+
+  OH brand orange: #ff9161
+  Light orange: #ffceb9
+  OH brand teal: #4ac1c8
+  Light teal: #c9ecef
+-------------------------------------------------- */
+
+body {
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  color: #4d4d4d;
+  font-weight: 300;
+}
+
+code {
+  background-color: inherit;
+  color: #f7763e;
+}
+
+.nav > li > a, .navbar-form, .btn {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+a,
+.navbar-default .navbar-nav > li > a,
+.navbar-default .navbar-brand {
+  color: #4ac1c8;
+}
+
+.navbar-default {
+  border-radius: 0px;
+  background-color: #fff;
+  border: 0px;
+}
+
+a:hover,
+a:focus,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+  color: #3c9da3;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+  color: #3c9da3;
+  background-color: #edf9fa;
+}
+
+.btn-default {
+  background-color: #4ac1c8;
+  color: #fff;
+  border: 0px;
+}
+
+.btn-default:hover, .btn-default:focus {
+  background-color: #3c9da3;
+  color: #fff;
+  border: 0px;
+}
+
+.btn-primary {
+  background-color: #ff9161;
+  color: #fff;
+  border: 0px;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #f7763e;
+  color: #fff;
+  border: 0px;
+}
+
+.form-control {
+  border: 1px solid #4ac1c8;
+}
+
+.form-control:focus {
+  box-shadow: 0px 0px 4px #4ac1c8;
+  border: 1px solid #4ac1c8;
+}
+
+.footer {
+  background-color: #edf9fa;
+}
+
+.jumbotron {
+  background-color: #edf9fa;
+}
+
+.panel-default {
+  border-color: #4ac1c8;
+}
+
+.panel-default > .panel-heading {
+    background-color: #edf9fa;
+    border-color: #4ac1c8;
+}
