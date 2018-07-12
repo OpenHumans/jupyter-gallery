@@ -70,35 +70,77 @@ a:focus,
   padding: 5px 10px;
 }
 
-.btn-group-xs>.btn, .btn-xs,
-.btn-group-xs>.btn:hover, .btn-xs:hover,
-.btn-group-xs>.btn:focus, .btn-xs:focus {
+.btn-group-xs>.btn.btn-primary.btn-primary-hollow,
+.btn.btn-primary.btn-primary-hollow.btn-xs,
+.btn-group-xs>.btn.btn-primary.btn-primary-hollow:hover,
+.btn.btn-primary.btn-primary-hollow.btn-xs:hover,
+.btn-group-xs>.btn.btn-primary.btn-primary-hollow:focus,
+.btn.btn-primary.btn-primary-hollow.btn-xs:focus,
+.btn-group-xs>.btn.btn-default, .btn.btn-default.btn-xs,
+.btn-group-xs>.btn.btn-default:hover, .btn.btn-default.btn-xs:hover,
+.btn-group-xs>.btn.btn-default:focus, .btn.btn-default.btn-xs:focus {
     padding: 0px 4px;
 }
 
-.btn-group-sm>.btn, .btn-sm,
-.btn-group-sm>.btn:hover, .btn-sm:hover,
-.btn-group-sm>.btn:focus, .btn-sm:focus {
+.btn-group-sm>.btn.btn-primary.btn-primary-hollow,
+.btn.btn-primary.btn-primary-hollow.btn-sm,
+.btn-group-sm>.btn.btn-primary.btn-primary-hollow:hover,
+.btn.btn-primary.btn-primary-hollow.btn-sm:hover,
+.btn-group-sm>.btn.btn-primary.btn-primary-hollow:focus,
+.btn.btn-primary.btn-primary-hollow.btn-sm:focus,
+.btn-group-sm>.btn.btn-default, .btn.btn-default.btn-sm,
+.btn-group-sm>.btn.btn-default:hover, .btn.btn-default.btn-sm:hover,
+.btn-group-sm>.btn.btn-default:focus, .btn.btn-default.btn-sm:focus {
     padding: 4px 9px;
 }
 
-.btn-group-lg>.btn, .btn-lg,
-.btn-group-lg>.btn:hover, .btn-lg:hover,
-.btn-group-lg>.btn:focus, .btn-lg:focus {
+.btn-group-lg>.btn.btn-primary.btn-primary-hollow,
+.btn.btn-primary.btn-primary-hollow.btn-lg,
+.btn-group-lg>.btn.btn-primary.btn-primary-hollow:hover,
+.btn.btn-primary.btn-primary-hollow.btn-lg:hover,
+.btn-group-lg>.btn.btn-primary.btn-primary-hollow:focus,
+.btn.btn-primary.btn-primary-hollow.btn-lg:focus,
+.btn-group-lg>.btn.btn-default, .btn.btn-default.btn-lg,
+.btn-group-lg>.btn.btn-default:hover, .btn.btn-default.btn-lg:hover,
+.btn-group-lg>.btn.btn-default:focus, .btn.btn-lg.btn-default:focus,
+.btn-group-lg>.btn.btn-primary-hollow, .btn.btn-default.btn-lg,
+.btn-group-lg>.btn.btn-default:hover, .btn.btn-default.btn-lg:hover,
+.btn-group-lg>.btn.btn-default:focus, .btn-lg.btn-default.btn-lg:focus {
     padding: 9px 15px;
+}
+
+.btn-primary.btn-primary-hollow {
+  background-color: #fff;
+  border: 2px solid #ff9161;
+  color: #4ac1c8;
+  padding: 5px 10px;
+}
+
+.btn-primary.btn-primary-hollow:hover, .btn-primary.btn-primary-hollow:focus {
+  background-color: #fff1eb;
+  border: 2px solid #f7763e;
+  color: #3c9da3;
+  padding: 5px 10px;
 }
 
 .btn-primary {
   background-color: #ff9161;
-  color: #fff;
-  border: 0px;
-  padding: 7px 10px;
+  border-color: #ff9161;
 }
 
 .btn-primary:hover, .btn-primary:focus {
   background-color: #f7763e;
-  color: #fff;
-  border: 0px;
+  border-color: #f7763e;
+}
+
+.btn-info {
+  background-color: #4ac1c8;
+  border-color: #4ac1c8;
+}
+
+.btn-info:hover, .btn-info:focus {
+  background-color: #3c9da3;
+  border-color: #3c9da3;
 }
 
 .form-control {
