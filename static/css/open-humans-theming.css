@@ -53,25 +53,46 @@ a:focus,
 .navbar-default .navbar-nav > .active > a:focus,
 .navbar-default .navbar-nav > .active > a:hover {
   color: #3c9da3;
-  background-color: #edf9fa;
+  background-color: #e6f9fa;
 }
 
 .btn-default {
-  background-color: #4ac1c8;
-  color: #fff;
-  border: 0px;
+  background-color: #fff;
+  border: 2px solid #4ac1c8;
+  color: #4ac1c8;
+  padding: 5px 10px;
 }
 
 .btn-default:hover, .btn-default:focus {
-  background-color: #3c9da3;
-  color: #fff;
-  border: 0px;
+  background-color: #e6f9fa;
+  border: 2px solid #4ac1c8;
+  color: #3c9da3;
+  padding: 5px 10px;
+}
+
+.btn-group-xs>.btn, .btn-xs,
+.btn-group-xs>.btn:hover, .btn-xs:hover,
+.btn-group-xs>.btn:focus, .btn-xs:focus {
+    padding: 0px 4px;
+}
+
+.btn-group-sm>.btn, .btn-sm,
+.btn-group-sm>.btn:hover, .btn-sm:hover,
+.btn-group-sm>.btn:focus, .btn-sm:focus {
+    padding: 4px 9px;
+}
+
+.btn-group-lg>.btn, .btn-lg,
+.btn-group-lg>.btn:hover, .btn-lg:hover,
+.btn-group-lg>.btn:focus, .btn-lg:focus {
+    padding: 9px 15px;
 }
 
 .btn-primary {
   background-color: #ff9161;
   color: #fff;
   border: 0px;
+  padding: 7px 10px;
 }
 
 .btn-primary:hover, .btn-primary:focus {
@@ -90,11 +111,11 @@ a:focus,
 }
 
 .footer {
-  background-color: #edf9fa;
+  background-color: #e6f9fa;
 }
 
 .jumbotron {
-  background-color: #edf9fa;
+  background-color: #e6f9fa;
 }
 
 .panel-default {
@@ -102,6 +123,6 @@ a:focus,
 }
 
 .panel-default > .panel-heading {
-    background-color: #edf9fa;
+    background-color: #e6f9fa;
     border-color: #4ac1c8;
 }
