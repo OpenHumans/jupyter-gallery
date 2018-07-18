@@ -1,6 +1,8 @@
 # A Jupiter Notebook Gallery: Juno's Exploratory
 
 [![Build Status](https://travis-ci.org/gedankenstuecke/jupyter-gallery.svg?branch=master)](https://travis-ci.org/gedankenstuecke/jupyter-gallery)
+[![Maintainability](https://api.codeclimate.com/v1/badges/65c9247d5e7293dc94da/maintainability)](https://codeclimate.com/github/gedankenstuecke/jupyter-gallery/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/65c9247d5e7293dc94da/test_coverage)](https://codeclimate.com/github/gedankenstuecke/jupyter-gallery/test_coverage)
 
 This `django` app creates a website that interfaces with an external API (right now only with the one of Open Humans) to import Jupyter Notebooks.
 
