@@ -5,12 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from open_humans.models import OpenHumansMember
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
 from .helpers import create_notebook_link, find_notebook_by_keywords
 from .helpers import suggest_data_sources, identify_master_notebook
+from .helpers import paginate_items
 from .models import SharedNotebook, NotebookLike
 from django.http import HttpResponse
 from django.urls import reverse
@@ -124,16 +124,9 @@ def dashboard(request):
 def likes(request):
     oh_member = request.user.oh_member
     liked_notebook_list = oh_member.notebooklike_set.all().order_by('-created_at')
-    paginator = Paginator(liked_notebook_list, 20)
-    page = request.GET.get('page')
-    try:
-        liked_notebooks = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        liked_notebooks = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        liked_notebooks = paginator.page(paginator.num_pages)
+    liked_notebooks = paginate_items(
+                        liked_notebook_list,
+                        request.GET.get('page'))
     return render(request, 'main/likes.html',
                   context={'liked_notebooks': liked_notebooks,
                            'section': 'likes'})
@@ -270,16 +263,7 @@ def open_notebook_hub(request, notebook_id):
 def notebook_index(request):
     notebook_list = SharedNotebook.objects.filter(
         master_notebook=None).order_by('-updated_at')
-    paginator = Paginator(notebook_list, 20)
-    page = request.GET.get('page')
-    try:
-        notebooks = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        notebooks = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        notebooks = paginator.page(paginator.num_pages)
+    notebooks = paginate_items(notebook_list, request.GET.get('page'))
     return render(request,
                   'main/notebook_index.html',
                   {'notebooks': notebooks,
@@ -336,16 +320,7 @@ def search_notebooks(request):
         search_term = request.GET.get('search_term', '')
         search_field = request.GET.get('search_field', None)
         notebook_list = find_notebook_by_keywords(search_term, search_field)
-    paginator = Paginator(notebook_list, 20)
-    page = request.GET.get('page')
-    try:
-        notebooks = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        notebooks = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        notebooks = paginator.page(paginator.num_pages)
+    notebooks = paginate_items(notebook_list, request.GET.get('page'))
     return render(request,
                   'main/search.html',
                   {'notebooks': notebooks,
