@@ -3,6 +3,7 @@ from django.conf import settings
 from django.urls import reverse
 from main.models import SharedNotebook
 import re
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def get_notebook_files(oh_member_data):
@@ -76,3 +77,14 @@ def identify_master_notebook(notebook_name, oh_member):
     if other_notebooks:
         return other_notebooks[0]
     return None
+
+
+def paginate_items(queryset, page):
+    paginator = Paginator(queryset, 20)
+    try:
+        paged_queryset = paginator.page(page)
+    except PageNotAnInteger:
+        paged_queryset = paginator.page(1)
+    except EmptyPage:
+        paged_queryset = paginator.page(paginator.num_pages)
+    return paged_queryset
