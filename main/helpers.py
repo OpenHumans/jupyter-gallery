@@ -57,7 +57,6 @@ def find_notebook_by_keywords(search_term, search_field=None):
 
 
 def suggest_data_sources(notebook_content):
-    print(notebook_content)
     potential_sources = re.findall("direct-sharing-\d+", str(notebook_content))
     if potential_sources:
         response = requests.get(
