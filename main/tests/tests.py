@@ -1,8 +1,9 @@
 from django.test import TestCase, Client
 from django.conf import settings
 from open_humans.models import OpenHumansMember
-from main.models import SharedNotebook
+from main.models import SharedNotebook, NotebookComment
 import vcr
+import arrow
 
 
 class ViewTest(TestCase):
@@ -56,3 +57,28 @@ class ViewTest(TestCase):
         self.assertEqual(
             notebooks[0].notebook_name,
             'twitter-and-fitbit-activity.ipynb')
+
+    def test_add_comment(self):
+        c = Client()
+        c.login(username=self.user.username, password='foobar')
+        self.notebook = SharedNotebook(
+            oh_member=self.oh_member,
+            notebook_name='test_notebook.ipynb',
+            notebook_content=open(
+                'main/tests/fixtures/test_notebook.ipynb').read(),
+            description='test_description',
+            tags='["foo", "bar"]',
+            data_sources='["source1", "source2"]',
+            views=123,
+            updated_at=arrow.now().format(),
+            created_at=arrow.now().format()
+        )
+        self.notebook.save()
+        self.assertEqual(len(NotebookComment.objects.all()), 0)
+        response = c.post(
+                    '/add-comment/{}/'.format(self.notebook.id),
+                    {'comment_text': 'stupid comment'},
+                    follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(NotebookComment.objects.all()), 1)
