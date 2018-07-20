@@ -61,6 +61,7 @@ class ViewTest(TestCase):
     def test_add_comment(self):
         c = Client()
         c.login(username=self.user.username, password='foobar')
+        self.assertEqual(len(NotebookComment.objects.all()), 0)
         self.notebook = SharedNotebook(
             oh_member=self.oh_member,
             notebook_name='test_notebook.ipynb',
@@ -74,7 +75,6 @@ class ViewTest(TestCase):
             created_at=arrow.now().format()
         )
         self.notebook.save()
-        self.assertEqual(len(NotebookComment.objects.all()), 0)
         response = c.post(
                     '/add-comment/{}/'.format(self.notebook.id),
                     {'comment_text': 'stupid comment'},
@@ -82,3 +82,33 @@ class ViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(NotebookComment.objects.all()), 1)
+
+    def test_edit_notebook(self):
+        self.notebook = SharedNotebook(
+            oh_member=self.oh_member,
+            notebook_name='test_notebook.ipynb',
+            notebook_content=open(
+                'main/tests/fixtures/test_notebook.ipynb').read(),
+            description='test_description',
+            tags='["foo", "bar"]',
+            data_sources='["source1", "source2"]',
+            views=123,
+            updated_at=arrow.now().format(),
+            created_at=arrow.now().format()
+        )
+        self.notebook.save()
+        c = Client()
+        c.login(username=self.user.username, password='foobar')
+
+        response = c.post(
+            '/edit-notebook/{}/'.format(self.notebook.id),
+            {
+                'description': 'edited',
+                'tags': 'notfoo, notbar',
+                'data_sources': 'new_data_source',
+            },
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        updated_nb = SharedNotebook.objects.get(pk=self.notebook.pk)
+        self.assertEqual(updated_nb.description, 'edited')
