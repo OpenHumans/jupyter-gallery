@@ -6,7 +6,7 @@ import vcr
 import arrow
 
 
-class ViewTest(TestCase):
+class GeneralTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
         self.oh_member = OpenHumansMember.create(
