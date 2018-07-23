@@ -1,9 +1,9 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, Client
 from django.conf import settings
 from open_humans.models import OpenHumansMember
 from main.models import SharedNotebook
 from main.views import render_notebook, open_notebook_hub
-import arrow
+import arrow, vcr
 
 
 class ViewTest(TestCase):
@@ -46,3 +46,44 @@ class ViewTest(TestCase):
         open_notebook_hub(r, self.notebook.id)
         updated_nb = SharedNotebook.objects.get(pk=self.notebook.id)
         self.assertEqual(updated_nb.views, 124)
+
+    def test_shared(self):
+        c = Client()
+        response = c.get('/shared/')
+        self.assertEqual(response.status_code, 200)
+        c.login(username=self.user.username, password='foobar')
+        logged_in_response = c.get('/shared/')
+        self.assertEqual(logged_in_response.status_code, 302)
+
+    def test_index(self):
+        c = Client()
+        response = c.get('/')
+        self.assertEqual(response.status_code, 200)
+        c.login(username=self.user.username, password='foobar')
+        logged_in_response = c.get('/')
+        self.assertEqual(logged_in_response.status_code, 302)
+
+    def test_about(self):
+        c = Client()
+        response = c.get('/about/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_likes(self):
+        c = Client()
+        response = c.get('/likes')
+        self.assertEqual(response.status_code, 301)
+        c.login(username=self.user.username, password='foobar')
+        logged_in_response = c.get('/likes/')
+        self.assertEqual(logged_in_response.status_code, 200)
+
+        @vcr.use_cassette('main/tests/fixtures/token_exchange_valid.yaml',
+                      record_mode='none')
+        def test_complete(self):
+            c = Client()
+            self.assertEqual(0,
+                             OpenHumansMember.objects.all().count())
+            response = c.get("/complete", {'code': 'mytestcode'})
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, 'main/complete.html')
+            self.assertEqual(1,
+                             OpenHumansMember.objects.all().count())
