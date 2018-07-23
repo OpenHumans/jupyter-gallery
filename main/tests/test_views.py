@@ -9,6 +9,9 @@ import arrow, vcr
 class ViewTest(TestCase):
     def setUp(self):
         settings.DEBUG = True
+        settings.OPENHUMANS_CLIENT_ID = "6yNYmUlXN1wLwQFQR0lnUohR1KMeVt"
+        settings.OPENHUMANS_CLIENT_SECRET = "Y2xpZW50aWQ6Y2xpZW50c2VjcmV0"
+        settings.OPENHUMANS_APP_BASE_URL = "http://127.0.0.1:5000"
         self.factory = RequestFactory()
         self.oh_member = OpenHumansMember.create(
                             oh_id=1234,
@@ -76,14 +79,14 @@ class ViewTest(TestCase):
         logged_in_response = c.get('/likes/')
         self.assertEqual(logged_in_response.status_code, 200)
 
-        @vcr.use_cassette('main/tests/fixtures/token_exchange_valid.yaml',
-                      record_mode='none')
-        def test_complete(self):
-            c = Client()
-            self.assertEqual(0,
-                             OpenHumansMember.objects.all().count())
-            response = c.get("/complete", {'code': 'mytestcode'})
-            self.assertEqual(response.status_code, 200)
-            self.assertTemplateUsed(response, 'main/complete.html')
-            self.assertEqual(1,
-                             OpenHumansMember.objects.all().count())
+    @vcr.use_cassette('main/tests/fixtures/complete.yaml',
+                  record_mode='none')
+    def test_complete(self):
+        c = Client()
+        self.assertEqual(1,
+                         OpenHumansMember.objects.all().count())
+        response = c.get("/complete", {'code': 'mytestcode'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/index.html')
+        self.assertEqual(2,
+                         OpenHumansMember.objects.all().count())
