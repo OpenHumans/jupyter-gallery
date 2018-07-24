@@ -24,8 +24,8 @@ class SharedNotebookTest(TestCase):
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),
             description='test_description',
-            tags='foo, bar',
-            data_sources='source1, source2',
+            tags='["foo", "bar"]',
+            data_sources='["source1", "source2"]',
             views=123,
             updated_at=arrow.now().format(),
             created_at=arrow.now().format()
@@ -83,3 +83,9 @@ class SharedNotebookTest(TestCase):
         self.assertEqual(
             nbd,
             ('test_notebook.ipynb', 'http://example.com/test_notebook.ipynb'))
+
+    def test_metadata_functions(self):
+        self.assertEqual(self.notebook.get_tags(),
+                         'foo,bar')
+        self.assertEqual(self.notebook.get_data_sources(),
+                         'source1,source2')
