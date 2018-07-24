@@ -98,3 +98,10 @@ class ViewTest(TestCase):
         self.assertEqual(len(OpenHumansMember.objects.all()), 1)
         c.post('/delete-user/')
         self.assertEqual(len(OpenHumansMember.objects.all()), 0)
+
+    def test_delete_notebook(self):
+        c = Client()
+        c.login(username=self.user.username, password='foobar')
+        self.assertEqual(len(SharedNotebook.objects.all()), 1)
+        c.post('/delete-notebook/{}/'.format(self.notebook.pk))
+        self.assertEqual(len(SharedNotebook.objects.all()), 0)

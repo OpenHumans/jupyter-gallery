@@ -228,14 +228,15 @@ def edit_notebook(request, notebook_id):
 
 @login_required(login_url="/")
 def delete_notebook(request, notebook_id):
-    oh_member = request.user.oh_member
-    notebook = SharedNotebook.objects.get(pk=notebook_id)
-    if notebook.oh_member != oh_member:
-        messages.warning(request, 'Permission denied!')
-        return redirect("/")
-    notebook.delete()
-    messages.info(request, 'Deleted {}!'.format(notebook.notebook_name))
-    return redirect("/dashboard")
+    if request.method == "POST":
+        oh_member = request.user.oh_member
+        notebook = SharedNotebook.objects.get(pk=notebook_id)
+        if notebook.oh_member != oh_member:
+            messages.warning(request, 'Permission denied!')
+            return redirect("/")
+        notebook.delete()
+        messages.info(request, 'Deleted {}!'.format(notebook.notebook_name))
+        return redirect("/dashboard")
 
 
 def render_notebook(request, notebook_id):
