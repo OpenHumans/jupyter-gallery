@@ -70,7 +70,7 @@ def complete(request):
     """
     Receive user from Open Humans. Store data, start upload.
     """
-    print("Received user returning from Open Humans.")
+    # print("Received user returning from Open Humans.")
     # Exchange code for token.
     # This creates an OpenHumansMember and associated user account.
     code = request.GET.get('code', '')
@@ -316,8 +316,6 @@ def like_notebook(request, notebook_id):
 def search_notebooks(request):
     if request.method == "POST":
         search_term = request.POST.get('search_term')
-        print(search_term)
-        print(len(search_term))
         notebook_list = find_notebook_by_keywords(search_term)
     else:
         search_term = request.GET.get('search_term', '')

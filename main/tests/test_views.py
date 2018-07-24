@@ -114,3 +114,22 @@ class ViewTest(TestCase):
         self.assertEqual(len(NotebookLike.objects.all()), 1)
         c.post('/like-notebook/{}/'.format(self.notebook.pk))
         self.assertEqual(len(NotebookLike.objects.all()), 0)
+
+    @vcr.use_cassette('main/tests/fixtures/suggested_sources.yaml',
+                      record_mode='none')
+    def test_search_notebooks(self):
+        c = Client()
+        post_response = c.post('/search/', {
+                        'search_term': 'source1',
+                    })
+        self.assertContains(post_response,
+                            "test_notebook.ipynb",
+                            status_code=200)
+        get_response = c.get('/search/', {
+                        'search_term': 'source1',
+                        'search_field': 'tags'
+                    })
+        self.assertNotContains(
+                get_response,
+                "test_notebook.ipynb",
+                status_code=200)
