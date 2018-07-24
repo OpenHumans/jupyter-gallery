@@ -1,7 +1,7 @@
 from django.test import TestCase, RequestFactory, Client
 from django.conf import settings
 from open_humans.models import OpenHumansMember
-from main.models import SharedNotebook
+from main.models import SharedNotebook, NotebookLike
 from main.views import render_notebook, open_notebook_hub
 import arrow
 import vcr
@@ -105,3 +105,12 @@ class ViewTest(TestCase):
         self.assertEqual(len(SharedNotebook.objects.all()), 1)
         c.post('/delete-notebook/{}/'.format(self.notebook.pk))
         self.assertEqual(len(SharedNotebook.objects.all()), 0)
+
+    def test_notebook_like(self):
+        c = Client()
+        c.login(username=self.user.username, password='foobar')
+        self.assertEqual(len(NotebookLike.objects.all()), 0)
+        c.post('/like-notebook/{}/'.format(self.notebook.pk))
+        self.assertEqual(len(NotebookLike.objects.all()), 1)
+        c.post('/like-notebook/{}/'.format(self.notebook.pk))
+        self.assertEqual(len(NotebookLike.objects.all()), 0)
