@@ -3,7 +3,8 @@ from django.conf import settings
 from open_humans.models import OpenHumansMember
 from main.models import SharedNotebook
 from main.views import render_notebook, open_notebook_hub
-import arrow, vcr
+import arrow
+import vcr
 
 
 class ViewTest(TestCase):
@@ -90,3 +91,10 @@ class ViewTest(TestCase):
         self.assertTemplateUsed(response, 'main/index.html')
         self.assertEqual(2,
                          OpenHumansMember.objects.all().count())
+
+    def test_delete_user(self):
+        c = Client()
+        c.login(username=self.user.username, password='foobar')
+        self.assertEqual(len(OpenHumansMember.objects.all()), 1)
+        c.post('/delete-user/')
+        self.assertEqual(len(OpenHumansMember.objects.all()), 0)

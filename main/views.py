@@ -59,9 +59,10 @@ def about(request):
 
 @login_required(login_url="/")
 def delete_user(request):
-    request.user.delete()
-    messages.info(request, "Your account was deleted!")
-    logout(request)
+    if request.method == "POST":
+        request.user.delete()
+        messages.info(request, "Your account was deleted!")
+        logout(request)
     return redirect('index')
 
 
@@ -111,11 +112,12 @@ def dashboard(request):
         return redirect("/")
     all_available_notebooks = get_notebook_files(oh_member_data)
     existing_notebooks = SharedNotebook.objects.filter(oh_member=oh_member)
-    context['notebook_files'] = all_available_notebooks
-    context['existing_notebooks'] = existing_notebooks
-    context['JH_URL'] = settings.JUPYTERHUB_BASE_URL
-    context['base_url'] = request.build_absolute_uri("/").rstrip('/')
-    context['section'] = 'dashboard'
+    context = {
+        'notebook_files': all_available_notebooks,
+        'existing_notebooks': existing_notebooks,
+        'JH_URL': settings.JUPYTERHUB_BASE_URL,
+        'base_url': request.build_absolute_uri("/").rstrip('/'),
+        'section': 'dashboard'}
     return render(request, 'main/dashboard.html',
                   context=context)
 

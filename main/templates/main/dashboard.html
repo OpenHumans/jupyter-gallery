@@ -68,7 +68,10 @@
           No data available yet.
 
         {%endif%}
-        <a href="{% url 'delete-user'%}"><button type="button" class="btn btn-danger">Delete account & all notebooks <i class="far fa-trash-alt"></i></button></a>
+        <form action="{% url 'delete-user' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" value="delete" class="btn btn-danger">Delete account & all notebooks <i class="far fa-trash-alt"></i></button>
+        </form>
       </div>
     </div>
 
