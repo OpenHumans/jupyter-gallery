@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="container">
+    <h1>Data sources</h1>
+
+    <div class="row">
+      <div class="col-md-6">
+        <p class='lead'>
+          See all the data sources available through the <i>Exploratory</i> and how many
+          notebooks we have for each data source.
+          Click on any data source to get to the full list of notebooks that
+          use this data source.
+        </br></br>Your favorite data source is still missing? Read our
+        <a href="{%url 'about' %}"><i>About</i> page</a> to learn how to
+          share your own notebook!
+        </p>
+
+      </div>
+      <div class='col-md-6'>
+        <div class="table-responsive">
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>Data source</th>
+              <th>Number of Notebooks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%for source in data_sources%}
+            <tr>
+              <td>
+                <a href="{%url 'data-sources' source.0%}">
+                {{source.0}}
+                </a>
+              </td>
+              <td>
+                {{source.1}}
+              </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

@@ -25,8 +25,8 @@ class HelpersTest(TestCase):
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),
             description='test_description',
-            tags='foo, bar',
-            data_sources='source1, source2',
+            tags='["foo", "bar"]',
+            data_sources='["source1", "source2"]',
             views=123,
             updated_at=arrow.now().format(),
             created_at=arrow.now().format()
@@ -71,8 +71,8 @@ class HelpersTest(TestCase):
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),
             description='test_description',
-            tags='foo, bar',
-            data_sources='source1, source2',
+            tags='["foo", "bar"]',
+            data_sources='["source1", "source2"]',
             views=123,
             updated_at=arrow.now().format(),
             created_at=arrow.now().format(),
@@ -87,8 +87,8 @@ class HelpersTest(TestCase):
             notebook_content=open(
                 'main/tests/fixtures/test_notebook.ipynb').read(),
             description='test_description',
-            tags='foo, bar',
-            data_sources='source1, source2',
+            tags='["foo", "bar"]',
+            data_sources='["source1", "source2"]',
             views=123,
             updated_at=arrow.now().format(),
             created_at=arrow.now().format(),
@@ -103,3 +103,13 @@ class HelpersTest(TestCase):
         self.assertEqual(
             nb_three.master_notebook,
             nb_two)
+
+    def test_get_all_data_sources_numeric(self):
+        sources_numeric = helpers.get_all_data_sources_numeric()
+        self.assertIn(('source2', 1), sources_numeric)
+        self.assertIn(('source1', 1), sources_numeric)
+
+    def test_get_all_data_sources(self):
+        sources = helpers.get_all_data_sources()
+        self.assertIn('source2', sources)
+        self.assertIn('source1', sources)
