@@ -1,22 +1,16 @@
 import logging
-import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from django.conf import settings
-from open_humans.models import OpenHumansMember
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
-from .helpers import create_notebook_link, find_notebook_by_keywords
+from .helpers import find_notebook_by_keywords
 from .helpers import suggest_data_sources, identify_master_notebook
-from .helpers import paginate_items
-from .models import SharedNotebook, NotebookLike
-from django.http import HttpResponse
-from django.urls import reverse
+from .helpers import paginate_items, oh_code_to_member
+from .models import SharedNotebook
 import arrow
-import nbconvert
-import nbformat
 import json
 # Set up logging.
 logger = logging.getLogger(__name__)
@@ -46,7 +40,7 @@ def index(request):
         return redirect('/notebooks')
     else:
         latest_notebooks = SharedNotebook.objects.filter(
-            master_notebook=None).order_by('-updated_at')[:10]
+            master_notebook=None).order_by('-updated_at')[:5]
         context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
                    'latest_notebooks': latest_notebooks}
 
@@ -239,30 +233,6 @@ def delete_notebook(request, notebook_id):
         return redirect("/dashboard")
 
 
-def render_notebook(request, notebook_id):
-    notebook = SharedNotebook.objects.get(pk=notebook_id)
-    format_notebook = nbformat.reads(notebook.notebook_content,
-                                     as_version=nbformat.NO_CONVERT)
-    html_exporter = nbconvert.HTMLExporter()
-    html_exporter.template_file = 'basic'
-    (body, resources) = html_exporter.from_notebook_node(format_notebook)
-    return HttpResponse(body)
-
-
-def export_notebook(request, notebook_id):
-    notebook = SharedNotebook.objects.get(pk=notebook_id)
-    return HttpResponse(notebook.notebook_content,
-                        content_type='application/json')
-
-
-def open_notebook_hub(request, notebook_id):
-    notebook = SharedNotebook.objects.get(pk=notebook_id)
-    notebook.views += 1
-    notebook.save()
-    notebook_link = create_notebook_link(notebook, request)
-    return redirect(notebook_link)
-
-
 def notebook_index(request):
     notebook_list = SharedNotebook.objects.filter(
         master_notebook=None).order_by('-updated_at')
@@ -271,46 +241,6 @@ def notebook_index(request):
                   'main/notebook_index.html',
                   {'notebooks': notebooks,
                    'section': 'explore'})
-
-
-def notebook_details(request, notebook_id):
-    notebook = SharedNotebook.objects.get(pk=notebook_id)
-    if notebook.master_notebook:
-        other_notebooks = notebook.master_notebook.sharednotebook_set.exclude(
-            pk=notebook.id)
-    else:
-        other_notebooks = notebook.sharednotebook_set.exclude(
-            pk=notebook.id)
-    liked = False
-    if request.user.is_authenticated:
-        if notebook.notebooklike_set.filter(oh_member=request.user.oh_member):
-            liked = True
-    format_notebook = nbformat.reads(notebook.notebook_content,
-                                     as_version=nbformat.NO_CONVERT)
-    html_exporter = nbconvert.HTMLExporter()
-    html_exporter.template_file = 'basic'
-    (body, resources) = html_exporter.from_notebook_node(format_notebook)
-    return render(request,
-                  'main/notebook_details.html',
-                  {'notebook': notebook,
-                   'other_notebooks': other_notebooks,
-                   'notebook_preview': body,
-                   'liked': liked})
-
-
-@login_required(login_url='/')
-def like_notebook(request, notebook_id):
-    notebook = SharedNotebook.objects.get(pk=notebook_id)
-    if notebook.notebooklike_set.filter(oh_member=request.user.oh_member):
-        like = NotebookLike.objects.get(oh_member=request.user.oh_member,
-                                        notebook=notebook)
-        like.delete()
-    else:
-        like = NotebookLike(notebook=notebook,
-                            oh_member=request.user.oh_member,
-                            created_at=arrow.now().format())
-        like.save()
-    return redirect(reverse('notebook-details', args=(notebook_id,)))
 
 
 def search_notebooks(request):
@@ -326,59 +256,3 @@ def search_notebooks(request):
                   'main/search.html',
                   {'notebooks': notebooks,
                    'search_term': search_term})
-
-
-def oh_code_to_member(code):
-    """
-    Exchange code for token, use this to create and return OpenHumansMember.
-    If a matching OpenHumansMember exists, update and return it.
-    """
-    if settings.OPENHUMANS_CLIENT_SECRET and \
-       settings.OPENHUMANS_CLIENT_ID and code:
-        data = {
-            'grant_type': 'authorization_code',
-            'redirect_uri':
-            '{}/complete'.format(settings.OPENHUMANS_APP_BASE_URL),
-            'code': code,
-        }
-        req = requests.post(
-            '{}/oauth2/token/'.format(settings.OPENHUMANS_OH_BASE_URL),
-            data=data,
-            auth=requests.auth.HTTPBasicAuth(
-                settings.OPENHUMANS_CLIENT_ID,
-                settings.OPENHUMANS_CLIENT_SECRET
-            )
-        )
-        data = req.json()
-
-        if 'access_token' in data:
-            oh_memberdata = api.exchange_oauth2_member(
-                data['access_token'])
-            oh_id = oh_memberdata['project_member_id']
-            oh_username = oh_memberdata['username']
-            try:
-                oh_member = OpenHumansMember.objects.get(oh_id=oh_id)
-                logger.debug('Member {} re-authorized.'.format(oh_id))
-                oh_member.access_token = data['access_token']
-                oh_member.refresh_token = data['refresh_token']
-                oh_member.token_expires = OpenHumansMember.get_expiration(
-                    data['expires_in'])
-            except OpenHumansMember.DoesNotExist:
-                oh_member = OpenHumansMember.create(
-                    oh_id=oh_id,
-                    oh_username=oh_username,
-                    access_token=data['access_token'],
-                    refresh_token=data['refresh_token'],
-                    expires_in=data['expires_in'])
-                logger.debug('Member {} created.'.format(oh_id))
-            oh_member.save()
-
-            return oh_member
-
-        elif 'error' in req.json():
-            logger.debug('Error in token exchange: {}'.format(req.json()))
-        else:
-            logger.warning('Neither token nor error info in OH response!')
-    else:
-        logger.error('OH_CLIENT_SECRET or code are unavailable')
-    return None

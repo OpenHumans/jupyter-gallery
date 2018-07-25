@@ -2,7 +2,7 @@ from django.test import TestCase, RequestFactory, Client
 from django.conf import settings
 from open_humans.models import OpenHumansMember
 from main.models import SharedNotebook, NotebookLike
-from main.views import render_notebook, open_notebook_hub
+from main.views_notebook_details import render_notebook, open_notebook_hub
 import arrow
 import vcr
 
