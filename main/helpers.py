@@ -1,4 +1,6 @@
 import requests
+import arrow
+import json
 from django.conf import settings
 from django.urls import reverse
 from main.models import SharedNotebook
@@ -7,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from ohapi import api
 import logging
 from open_humans.models import OpenHumansMember
+from django.contrib import messages
 logger = logging.getLogger(__name__)
 
 
@@ -154,3 +157,33 @@ def oh_code_to_member(code):
     else:
         logger.error('OH_CLIENT_SECRET or code are unavailable')
     return None
+
+
+def add_notebook_helper(request, notebook_url, notebook_name, oh_member):
+    notebook_content = download_notebook_oh(notebook_url)
+    notebook, created = SharedNotebook.objects.get_or_create(
+                                            oh_member=oh_member,
+                                            notebook_name=notebook_name)
+    notebook.description = request.POST.get('description')
+    tags = request.POST.get('tags')
+    tags = [tag.strip() for tag in tags.split(',')]
+    notebook.tags = json.dumps(tags)
+    data_sources = request.POST.get('data_sources')
+    data_sources = [ds.strip() for ds in data_sources.split(',')]
+    notebook.data_sources = json.dumps(data_sources)
+    notebook.notebook_name = notebook_name
+    notebook.notebook_content = notebook_content.decode()
+    notebook.updated_at = arrow.now().format()
+    notebook.oh_member = oh_member
+    notebook.master_notebook = identify_master_notebook(notebook_name,
+                                                        oh_member)
+    if created:
+        notebook.created_at = arrow.now().format()
+        messages.info(request, 'Your notebook {} has been shared!'.format(
+            notebook_name
+        ))
+    else:
+        messages.info(request, 'Your notebook {} has been updated!'.format(
+            notebook_name
+        ))
+    notebook.save()

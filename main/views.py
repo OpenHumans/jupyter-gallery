@@ -7,7 +7,7 @@ from django.conf import settings
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
 from .helpers import find_notebook_by_keywords
-from .helpers import suggest_data_sources, identify_master_notebook
+from .helpers import suggest_data_sources, add_notebook_helper
 from .helpers import paginate_items, oh_code_to_member
 from .models import SharedNotebook
 import arrow
@@ -138,36 +138,11 @@ def add_notebook(request, notebook_id):
         messages.error(request, "You need to re-authenticate with Open Humans")
         logout(request)
         return redirect("/")
-    notebook_name, notebook_url = get_notebook_oh(oh_member_data, notebook_id)
-    if request.method == 'POST':
-        notebook_content = download_notebook_oh(notebook_url)
-        notebook, created = SharedNotebook.objects.get_or_create(
-                                                oh_member=oh_member,
-                                                notebook_name=notebook_name)
-        notebook.description = request.POST.get('description')
-        tags = request.POST.get('tags')
-        tags = [tag.strip() for tag in tags.split(',')]
-        notebook.tags = json.dumps(tags)
-        data_sources = request.POST.get('data_sources')
-        data_sources = [ds.strip() for ds in data_sources.split(',')]
-        notebook.data_sources = json.dumps(data_sources)
-        notebook.notebook_name = notebook_name
-        notebook.notebook_content = notebook_content.decode()
-        notebook.updated_at = arrow.now().format()
-        notebook.oh_member = oh_member
-        notebook.master_notebook = identify_master_notebook(notebook_name,
-                                                            oh_member)
-        if created:
-            notebook.created_at = arrow.now().format()
-            messages.info(request, 'Your notebook {} has been shared!'.format(
-                notebook_name
-            ))
-        else:
-            messages.info(request, 'Your notebook {} has been updated!'.format(
-                notebook_name
-            ))
-        notebook.save()
 
+    notebook_name, notebook_url = get_notebook_oh(oh_member_data, notebook_id)
+
+    if request.method == 'POST':
+        add_notebook_helper(request, notebook_url, notebook_name, oh_member)
         return redirect('/dashboard')
     else:
         if len(SharedNotebook.objects.filter(oh_member=oh_member,
