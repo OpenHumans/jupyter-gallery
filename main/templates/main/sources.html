@@ -1,0 +1,83 @@
+{% extends 'main/base.html' %}
+{% block content %}
+{% load static %}
+<h1><i>{{search_term}}</i> Notebooks</h1>
+<p class='lead'>
+  Below you find all notebooks that use <i>{{search_term}}</i> as at least
+  one input data source. If you have data from <i>{{search_term}}</i> in your
+  <i>Open Humans</i> account you can run it on your data right away.
+</p>
+<div class="table-responsive">
+  <table class='table'>
+    <thead>
+      <tr>
+        <th>Notebook</th>
+        <th>Data Sources</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>Last updated</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for notebook in notebooks%}
+    <tr>
+      <td>
+        <a href="{%url 'notebook-details' notebook.id%}">
+          <code>{{notebook.notebook_name}}</code> </br>
+          <small>by {{notebook.oh_member.oh_username}} </small><i class="fas fa-info-circle"></i>
+        </a>
+      </td>
+      <td>
+        {%for source in notebook.get_data_sources_json%}
+        <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
+        <span class="label label-info">{{source}}</span>
+        </a>
+        {%endfor%}
+      </td>
+      <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></br>
+      <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
+      <td>
+        <i class="fas fa-eye"></i> {{notebook.views}}</br>
+      </td>
+      <td>
+        <i class="far fa-heart"></i> {{notebook.notebooklike_set.all|length}}
+      </td>
+      <td>{{notebook.updated_at|timesince}} ago</td>
+    </tr>
+    {%endfor%}
+    </tbody>
+  </table>
+</div>
+<nav aria-label="pagination">
+      <ul class="pagination">
+        {% if notebooks.has_previous %}
+            <li><a href="?page=1">&laquo; first</a></li>
+            <li><a aria-label="Previous" href="?page={{ notebooks.previous_page_number }}">previous</a></li>
+        {% endif %}
+            <li class="active"><a href='#'>Page {{ notebooks.number }} of {{ notebooks.paginator.num_pages }}</a></li>
+        {% if notebooks.has_next %}
+            <li><a href="?page={{ notebooks.next_page_number }}">next</a></li>
+            <li><a href="?page={{ notebooks.paginator.num_pages }}">last &raquo;</a></li>
+        {% endif %}
+      </ul>
+</nav>
+<div id="previewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i><div id='nbtitle_fill'></div></i></code></h4>
+      </div>
+      <div class="modal-body">
+        <div id='notebook_filler'></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

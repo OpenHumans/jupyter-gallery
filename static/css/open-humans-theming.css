@@ -116,6 +116,14 @@ a:focus,
   padding: 5px 10px;
 }
 
+.btn-primary.btn-primary-hollow.padded {
+  background-color: #fff;
+  border: 2px solid #ff9161;
+  color: #4ac1c8;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+}
+
 .btn-primary.btn-primary-hollow:hover, .btn-primary.btn-primary-hollow:focus {
   background-color: #fff1eb;
   border: 2px solid #f7763e;

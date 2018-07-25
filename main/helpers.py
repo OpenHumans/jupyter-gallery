@@ -10,6 +10,7 @@ from ohapi import api
 import logging
 from open_humans.models import OpenHumansMember
 from django.contrib import messages
+from collections import defaultdict
 logger = logging.getLogger(__name__)
 
 
@@ -67,6 +68,7 @@ def find_notebook_by_keywords(search_term, search_field=None):
                         master_notebook=None)
 
     nbs = notebooks_tag | notebooks_source | notebooks_description | notebooks_name | notebooks_user
+    nbs = nbs.order_by('updated_at')
     return nbs
 
 
@@ -187,3 +189,18 @@ def add_notebook_helper(request, notebook_url, notebook_name, oh_member):
             notebook_name
         ))
     notebook.save()
+
+
+def get_all_data_sources_numeric():
+    sdict = defaultdict(int)
+    for nb in SharedNotebook.objects.all():
+        for source in nb.get_data_sources_json():
+            sdict[source] += 1
+    sorted_sdict = sorted(sdict.items(), key=lambda x: x[1], reverse=True)
+    return sorted_sdict
+
+
+def get_all_data_sources():
+    sorted_sdict = get_all_data_sources_numeric()
+    sources = [i[0] for i in sorted_sdict]
+    return sources

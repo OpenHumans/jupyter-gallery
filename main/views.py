@@ -6,9 +6,10 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from ohapi import api
 from .helpers import get_notebook_files, get_notebook_oh, download_notebook_oh
-from .helpers import find_notebook_by_keywords
+from .helpers import find_notebook_by_keywords, get_all_data_sources
 from .helpers import suggest_data_sources, add_notebook_helper
 from .helpers import paginate_items, oh_code_to_member
+from .helpers import get_all_data_sources_numeric
 from .models import SharedNotebook
 import arrow
 import json
@@ -41,10 +42,32 @@ def index(request):
     else:
         latest_notebooks = SharedNotebook.objects.filter(
             master_notebook=None).order_by('-updated_at')[:5]
+        data_sources = get_all_data_sources()
         context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
-                   'latest_notebooks': latest_notebooks}
+                   'latest_notebooks': latest_notebooks,
+                   'data_sources': data_sources}
 
         return render(request, 'main/index.html', context=context)
+
+
+def data_sources(request, data_source):
+    nbs = find_notebook_by_keywords(data_source, search_field='data_sources')
+    nbs = nbs.order_by('-views')
+    nb_paged = paginate_items(nbs, request.GET.get('page'))
+    context = {
+            'section': 'sources',
+            'notebooks': nb_paged,
+            'search_term': data_source}
+    return render(request,
+                  'main/sources.html',
+                  context)
+
+
+def data_source_index(request):
+    data_sources = get_all_data_sources_numeric()
+    return render(request, 'main/sources_index.html', {
+                'section': 'sources',
+                'data_sources': data_sources})
 
 
 def about(request):

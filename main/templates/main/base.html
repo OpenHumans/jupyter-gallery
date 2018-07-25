@@ -54,6 +54,7 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li {% if section == 'explore' %} class="active" {%endif%}><a href="{%url "notebook-index"%}">Explore</a></li>
+              <li {% if section == 'sources' %} class="active" {%endif%}><a href="{%url "data-source-index"%}">Data sources</a></li>
             </ul>
             <form class="navbar-form navbar-left" action="{% url 'search'%}" method="get">
               <div class="form-group">

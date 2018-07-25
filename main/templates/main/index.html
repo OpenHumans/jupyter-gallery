@@ -11,27 +11,19 @@
       </p>
   </div>
     <div class="row">
-      <div class="col-md-5">
+      <div class="col-md-6">
         <h2>Data Sources</h2>
         <p>
           The <i>Exploratory</i> contains ready-to-use notebooks for many different data sources which are on Open Humans.
           Click the buttons below to find notebooks that make use of the different data sources:
         </p>
-
-
-        <ol>
-          <li><b>Click <i>Get Started</i> below</b><br>
-            This will take you to the <i>Open Humans</i> website.</li>
-          <li><b>Authorize this app</b><br>
-            This authorizes us to look at all the notebooks you have uplaoded to Open Humans.</li>
-          <li><b>Start sharing!</b><br>
-            After logging in
-          </li>
-        </ol>
         <p>
-          Learn more in our FAQ
+        {%for source in data_sources%}
+          <a href="{%url 'data-sources' source%}" class="btn btn-primary btn-primary-hollow btn-lg padded">
+          {{source}}
+        </a>
+        {%endfor%}
         </p>
-        <p>
         <a
           {% if client_id %}
           class="btn btn-primary btn-lg"
@@ -48,7 +40,7 @@
         </i></p>
         {% endif %}
       </div>
-      <div class='col-md-7'>
+      <div class='col-md-6'>
         <h2>The latest notebook additions</h2>
         Check out the latest notebooks that have been shared by our community.
         <div class="table-responsive">
