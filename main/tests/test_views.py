@@ -133,3 +133,20 @@ class ViewTest(TestCase):
                 get_response,
                 "test_notebook.ipynb",
                 status_code=200)
+
+    def test_source_index(self):
+        c = Client()
+        post_response = c.get('/sources/')
+        self.assertContains(post_response,
+                            "source1",
+                            status_code=200)
+
+    def test_source_detail(self):
+        c = Client()
+        post_response = c.get('/sources/source1/')
+        self.assertContains(post_response,
+                            "source1",
+                            status_code=200)
+        self.assertContains(post_response,
+                            "test_notebook.ipynb",
+                            status_code=200)
