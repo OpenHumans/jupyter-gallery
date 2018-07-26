@@ -3,7 +3,7 @@
 
   OH brand orange: #ff9161
   Light orange: #ffceb9
-  OH brand teal: #4ac1c8
+  OH brand teal: #008c94
   Light teal: #c9ecef
 -------------------------------------------------- */
 
@@ -31,7 +31,7 @@ code {
 a,
 .navbar-default .navbar-nav > li > a,
 .navbar-default .navbar-brand {
-  color: #4ac1c8;
+  color: #008c94;
 }
 
 .navbar-default {
@@ -59,7 +59,7 @@ a:focus,
 .btn-default {
   background-color: #fff;
   border: 2px solid #4ac1c8;
-  color: #4ac1c8;
+  color: #008c94;
   padding: 5px 10px;
 }
 
@@ -68,6 +68,12 @@ a:focus,
   border: 2px solid #4ac1c8;
   color: #3c9da3;
   padding: 5px 10px;
+}
+
+.btn-default.selected {
+  background-color: #fff1eb;
+  border: 2px solid #f7763e;
+  color: #3c9da3;
 }
 
 .btn-group-xs>.btn.btn-primary.btn-primary-hollow,
@@ -112,14 +118,14 @@ a:focus,
 .btn-primary.btn-primary-hollow {
   background-color: #fff;
   border: 2px solid #ff9161;
-  color: #4ac1c8;
+  color: #008c94;
   padding: 5px 10px;
 }
 
 .btn-primary.btn-primary-hollow.padded {
   background-color: #fff;
   border: 2px solid #ff9161;
-  color: #4ac1c8;
+  color: #008c94;
   padding: 5px 10px;
   margin-bottom: 5px;
 }
@@ -142,8 +148,8 @@ a:focus,
 }
 
 .btn-info {
-  background-color: #4ac1c8;
-  border-color: #4ac1c8;
+  background-color: #008c94;
+  border-color: #008c94;
 }
 
 .btn-info:hover, .btn-info:focus {
