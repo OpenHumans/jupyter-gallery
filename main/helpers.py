@@ -95,7 +95,7 @@ def identify_master_notebook(notebook_name, oh_member):
 
 
 def paginate_items(queryset, page):
-    paginator = Paginator(queryset, 20)
+    paginator = Paginator(queryset, 2)
     try:
         paged_queryset = paginator.page(page)
     except PageNotAnInteger:
@@ -193,7 +193,7 @@ def add_notebook_helper(request, notebook_url, notebook_name, oh_member):
 
 def get_all_data_sources_numeric():
     sdict = defaultdict(int)
-    for nb in SharedNotebook.objects.all():
+    for nb in SharedNotebook.objects.filter(master_notebook=None):
         for source in nb.get_data_sources_json():
             sdict[source] += 1
     sorted_sdict = sorted(sdict.items(), key=lambda x: x[1], reverse=True)

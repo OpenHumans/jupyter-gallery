@@ -13,6 +13,7 @@ from .helpers import get_all_data_sources_numeric
 from .models import SharedNotebook
 import arrow
 import json
+from django.db.models import Count
 # Set up logging.
 logger = logging.getLogger(__name__)
 
@@ -232,13 +233,23 @@ def delete_notebook(request, notebook_id):
 
 
 def notebook_index(request):
+    order_variable = request.GET.get('order_by', 'updated_at')
+    data_sources = get_all_data_sources()
+    if order_variable not in ['updated_at', 'likes', 'views']:
+        order_variable = 'updated_at'
     notebook_list = SharedNotebook.objects.filter(
-        master_notebook=None).order_by('-updated_at')
+        master_notebook=None)
+    if order_variable == 'likes':
+        notebook_list = notebook_list.annotate(
+            likes=Count('notebooklike'))
+    notebook_list = notebook_list.order_by('-{}'.format(order_variable))
     notebooks = paginate_items(notebook_list, request.GET.get('page'))
     return render(request,
                   'main/notebook_index.html',
                   {'notebooks': notebooks,
-                   'section': 'explore'})
+                   'section': 'explore',
+                   'order_by': order_variable,
+                   'data_sources': data_sources})
 
 
 def search_notebooks(request):
