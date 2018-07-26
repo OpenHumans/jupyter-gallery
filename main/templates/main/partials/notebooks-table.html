@@ -57,7 +57,7 @@
     <input class="search form-control" placeholder="Search" style="border-radius:4px;"/>
   </div>
   {% for source in data_sources %}
-  <button class="btn btn-default btn-sm filter-{{ source|cut:" " }}">{{ source }}</button>
+  <button class="btn btn-default btn-sm source-filter filter-{{ source|cut:" " }}">{{ source }}</button>
   {% endfor %}
   <table class='table'>
     <thead>

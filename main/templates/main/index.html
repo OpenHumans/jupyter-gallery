@@ -48,10 +48,9 @@
       $(this).removeClass('selected');
     } else {
       notebookList.filter(function(item) {
-        console.log(item.values().source)
-        console.log($text)
         return (item.values().source.includes($text));
       });
+      $(this).parent().find(".source-filter").removeClass('selected')
       $(this).addClass('selected');
     }
   });
