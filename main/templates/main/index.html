@@ -3,53 +3,53 @@
 {% block content %}
 
   <div class="container">
-    <div class="jumbotron">
-      <h1>Juno's <i>Personal Data Exploratory</i></h1>
-      <p>
-        📊📓 Personal Data Notebooks allow you to explore and analyze your personal data that is stored in <i>Open Humans</i>
-        right in your web browser. The <i>Exploratory</i> allows you to find and use interesting notebooks right away.
-      </p>
-  </div>
+    <h1>📊📓  Juno's <i>Personal Data Exploratory</i></h1>
+    <div class="row">
+      <div class="col-md-5">
+
+        <p class='lead'>
+          Personal Data Notebooks are interactive documents that combine text, graphics and data analysis. They live
+          right in your browser and allow you to gain insight from the personal data that you have stored in your <i>Open Humans</i>
+          account. </br></br>
+          Once you have found a notebook you like, just click the <button type="button" class="btn btn-primary btn-sm disabled">Open in Personal Data Notebooks <i class="fas fa-external-link-alt"></i></button>
+          button on the notebook page to run it on your own data!
+          <center>
+            <a class="btn btn-primary btn-lg"
+              href="{%url 'notebook-index'%}">
+              Explore Notebooks
+            </a>
+          </center>
+        </br>
+        </p>
+      </div>
+      <div class="col-md-7">
+        <img style='height: 100%; width: 100%; object-fit: contain' src="{% static 'aboutgifs/index.gif' %}"/>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-6">
-        <h2>Data Sources</h2>
+        <h2>Popular Data Sources</h2>
         <p>
-          The <i>Exploratory</i> contains ready-to-use notebooks for many different data sources which are on Open Humans.
-          Click the buttons below to find notebooks that make use of the different data sources:
+          Our community contributed ready-to-use notebooks for many different personal data sources.
+          Click the buttons below to find notebooks that analyze data from the most popular sources:
         </p>
         <p>
         {%for source in data_sources%}
-          <a href="{%url 'data-sources' source%}" class="btn btn-primary btn-primary-hollow btn-lg padded">
+          <a href="{%url 'notebook-index'%}?source={{source}}" class="btn btn-primary btn-primary-hollow btn-lg padded">
           {{source}}
         </a>
         {%endfor%}
         </p>
-        <a
-          {% if client_id %}
-          class="btn btn-primary btn-lg"
-          href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}"
-          {% else %}
-          class="btn btn-default disabled"
-          {% endif %}
-          >
-          Get started
-        </a>
-        {% if not client_id %}
-        <p class="text-muted"><i>
-          This button is disabled because client_id hasn't been configured.
-        </i></p>
-        {% endif %}
       </div>
       <div class='col-md-6'>
-        <h2>The latest notebook additions</h2>
-        Check out the latest notebooks that have been shared by our community.
+        <h2>Popular Notebooks</h2>
+        Below are some of the notebooks that are most popular with our community:
         <div class="table-responsive">
         <table class='table'>
           <thead>
             <tr>
               <th>Title</th>
               <th>Data sources</th>
-              <th>Updated</th>
             </tr>
           </thead>
           <tbody>
@@ -63,12 +63,11 @@
               </td>
               <td>
                 {%for source in notebook.get_data_sources_json%}
-                <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
+                <a href="{%url 'notebook-index'%}?source={{source}}">
                 <span class="label label-info">{{source}}</span>
                 </a>
                 {%endfor%}
               </td>
-              <td>{{notebook.updated_at|timesince}} ago</td>
             </tr>
             {%endfor%}
           </tbody>

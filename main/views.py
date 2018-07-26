@@ -13,6 +13,7 @@ from .helpers import get_all_data_sources_numeric
 from .models import SharedNotebook
 import arrow
 import json
+from django.db.models import Count
 # Set up logging.
 logger = logging.getLogger(__name__)
 
@@ -41,26 +42,13 @@ def index(request):
         return redirect('/notebooks')
     else:
         latest_notebooks = SharedNotebook.objects.filter(
-            master_notebook=None).order_by('-updated_at')[:5]
-        data_sources = get_all_data_sources()
+            master_notebook=None).order_by('-views')[:5]
+        data_sources = get_all_data_sources()[:6]
         context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
                    'latest_notebooks': latest_notebooks,
                    'data_sources': data_sources}
 
         return render(request, 'main/index.html', context=context)
-
-
-def data_sources(request, data_source):
-    nbs = find_notebook_by_keywords(data_source, search_field='data_sources')
-    nbs = nbs.order_by('-views')
-    nb_paged = paginate_items(nbs, request.GET.get('page'))
-    context = {
-            'section': 'sources',
-            'notebooks': nb_paged,
-            'search_term': data_source}
-    return render(request,
-                  'main/sources.html',
-                  context)
 
 
 def data_source_index(request):
@@ -232,13 +220,31 @@ def delete_notebook(request, notebook_id):
 
 
 def notebook_index(request):
-    notebook_list = SharedNotebook.objects.filter(
-        master_notebook=None).order_by('-updated_at')
+    order_variable = request.GET.get('order_by', 'updated_at')
+    data_sources = get_all_data_sources()
+    data_sources = sorted(data_sources)
+    if order_variable not in ['updated_at', 'likes', 'views']:
+        order_variable = 'updated_at'
+    source_filter = request.GET.get('source', None)
+    if source_filter:
+        notebook_list = find_notebook_by_keywords(
+                            source_filter,
+                            search_field='data_sources')
+    else:
+        notebook_list = SharedNotebook.objects.filter(
+            master_notebook=None)
+    if order_variable == 'likes':
+        notebook_list = notebook_list.annotate(
+            likes=Count('notebooklike'))
+    notebook_list = notebook_list.order_by('-{}'.format(order_variable))
     notebooks = paginate_items(notebook_list, request.GET.get('page'))
     return render(request,
                   'main/notebook_index.html',
                   {'notebooks': notebooks,
-                   'section': 'explore'})
+                   'section': 'explore',
+                   'order_by': order_variable,
+                   'data_sources': data_sources,
+                   'source': source_filter})
 
 
 def search_notebooks(request):

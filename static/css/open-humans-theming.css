@@ -31,7 +31,7 @@ code {
 a,
 .navbar-default .navbar-nav > li > a,
 .navbar-default .navbar-brand {
-  color: #4ac1c8;
+  color: #008c94;
 }
 
 .navbar-default {
@@ -59,14 +59,14 @@ a:focus,
 .btn-default {
   background-color: #fff;
   border: 2px solid #4ac1c8;
-  color: #4ac1c8;
+  color: #008c94;
   padding: 5px 10px;
 }
 
 .btn-default:hover, .btn-default:focus {
   background-color: #e6f9fa;
   border: 2px solid #4ac1c8;
-  color: #3c9da3;
+  color: #008c94;
   padding: 5px 10px;
 }
 
@@ -112,15 +112,19 @@ a:focus,
 .btn-primary.btn-primary-hollow {
   background-color: #fff;
   border: 2px solid #ff9161;
-  color: #4ac1c8;
+  color: #008c94;
   padding: 5px 10px;
 }
 
 .btn-primary.btn-primary-hollow.padded {
   background-color: #fff;
   border: 2px solid #ff9161;
-  color: #4ac1c8;
+  color: #008c94;
   padding: 5px 10px;
+  margin-bottom: 5px;
+}
+
+.btn-primary.btn-primary.btn-lg.padded {
   margin-bottom: 5px;
 }
 
@@ -142,8 +146,8 @@ a:focus,
 }
 
 .btn-info {
-  background-color: #4ac1c8;
-  border-color: #4ac1c8;
+  background-color: #008c94;
+  border-color: #008c94;
 }
 
 .btn-info:hover, .btn-info:focus {

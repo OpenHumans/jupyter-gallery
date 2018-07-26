@@ -14,7 +14,7 @@
           use this data source.
         </br></br>Your favorite data source is still missing? Read our
         <a href="{%url 'about' %}"><i>About</i> page</a> to learn how to
-          share your own notebook!
+          share your own notebook with a new data source!
         </p>
 
       </div>
@@ -31,7 +31,7 @@
             {%for source in data_sources%}
             <tr>
               <td>
-                <a href="{%url 'data-sources' source.0%}">
+                <a href="{%url 'notebook-index'%}?source={{source.0}}">
                 {{source.0}}
                 </a>
               </td>

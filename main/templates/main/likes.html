@@ -25,7 +25,7 @@
       </td>
       <td>
         {%for source in nl.notebook.get_data_sources_json%}
-        <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
+        <a href="{%url 'notebook-index'%}?source={{source}}">
         <span class="label label-info">{{source}}</span>
         </a>
         {%endfor%}
