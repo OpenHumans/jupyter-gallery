@@ -114,9 +114,8 @@
       <!-- Latest compiled and minified JavaScript via WaxCDN -->
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       <script src="{% static 'js/dashboard.js' %}"></script>
-      <script>
-
-      </script>
+      {% block extra_js %}
+      {% endblock %}
     <footer class="footer">
      <div class="fcontainer">
        <p class="text-muted">

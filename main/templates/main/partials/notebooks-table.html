@@ -1,0 +1,91 @@
+<style>
+.sort {
+  padding:8px 30px;
+  border-radius: 6px;
+  border:none;
+  display:inline-block;
+  color:#fff;
+  text-decoration: none;
+  background-color: #28a8e0;
+  height:30px;
+}
+.sort:hover {
+  text-decoration: none;
+  background-color:#1b8aba;
+}
+.sort:focus {
+  outline:none;
+}
+.sort:after {
+  display:inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  content:"";
+  position: relative;
+  top:-10px;
+  right:-5px;
+}
+.sort.asc:after {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #fff;
+  content:"";
+  position: relative;
+  top:4px;
+  right:-5px;
+}
+.sort.desc:after {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #fff;
+  content:"";
+  position: relative;
+  top:-4px;
+  right:-5px;
+}
+</style>
+
+<div id="notebooks">
+  <div class="input-group-sm" style="margin-right:10px;display:inline-block;">
+    <input class="search form-control" placeholder="Search" style="border-radius:4px;"/>
+  </div>
+  {% for source in data_sources %}
+  <button class="btn btn-default btn-sm filter-{{ source|cut:" " }}">{{ source }}</button>
+  {% endfor %}
+  <table class='table'>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Data sources</th>
+        <th>Updated</th>
+      </tr>
+    </thead>
+    <tbody class="list">
+      {% for notebook in latest_notebooks %}
+      <tr>
+        <td class="name">
+          <a href="{%url 'notebook-details' notebook.id%}">
+            <code>{{ notebook.notebook_name }}</code>
+            <small>by {{ notebook.oh_member.oh_username }} </small><i class="fas fa-info-circle"></i>
+          </a>
+        </td>
+        <td class="source">
+          {% for source in notebook.get_data_sources_json %}
+          <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
+          <span class="label label-info">{{source}}</span>
+          </a>
+          {%endfor%}
+        </td>
+        <td class="date">{{ notebook.updated_at|timesince }} ago</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

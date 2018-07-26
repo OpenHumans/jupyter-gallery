@@ -3,78 +3,60 @@
 {% block content %}
 
   <div class="container">
-    <div class="jumbotron">
-      <h1>Juno's <i>Personal Data Exploratory</i></h1>
-      <p>
-        📊📓 Personal Data Notebooks allow you to explore and analyze your personal data that is stored in <i>Open Humans</i>
-        right in your web browser. The <i>Exploratory</i> allows you to find and use interesting notebooks right away.
-      </p>
-  </div>
     <div class="row">
-      <div class="col-md-6">
-        <h2>Data Sources</h2>
+      <div class="col-xs-12">
         <p>
-          The <i>Exploratory</i> contains ready-to-use notebooks for many different data sources which are on Open Humans.
-          Click the buttons below to find notebooks that make use of the different data sources:
+          <b>Want to explore your data in Open Humans?
+          This gallery will help.</b>
+          There are a bunch of notebooks that you can use.
+          See if you find one you'd like to try – please give it
+          a ♥ if you like it!
         </p>
-        <p>
-        {%for source in data_sources%}
-          <a href="{%url 'data-sources' source%}" class="btn btn-primary btn-primary-hollow btn-lg padded">
-          {{source}}
+        <hr>
+        {% include 'main/partials/notebooks-table.html' %}
+        <hr>
+        <p class="small">
+          Want to add a notebook to the gallery?
+        {% if client_id %}
+        <a href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}">
+          Click here to log in
         </a>
-        {%endfor%}
-        </p>
-        <a
-          {% if client_id %}
-          class="btn btn-primary btn-lg"
-          href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}"
-          {% else %}
-          class="btn btn-default disabled"
-          {% endif %}
-          >
-          Get started
-        </a>
-        {% if not client_id %}
+        {% else %}
         <p class="text-muted"><i>
-          This button is disabled because client_id hasn't been configured.
+          The log in link is unavailable because client_id hasn't been configured.
         </i></p>
         {% endif %}
-      </div>
-      <div class='col-md-6'>
-        <h2>The latest notebook additions</h2>
-        Check out the latest notebooks that have been shared by our community.
-        <div class="table-responsive">
-        <table class='table'>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Data sources</th>
-              <th>Updated</th>
-            </tr>
-          </thead>
-          <tbody>
-            {%for notebook in latest_notebooks%}
-            <tr>
-              <td>
-                <a href="{%url 'notebook-details' notebook.id%}">
-                  <code>{{notebook.notebook_name}}</code>
-                  <small>by {{notebook.oh_member.oh_username}} </small><i class="fas fa-info-circle"></i>
-                </a>
-              </td>
-              <td>
-                {%for source in notebook.get_data_sources_json%}
-                <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
-                <span class="label label-info">{{source}}</span>
-                </a>
-                {%endfor%}
-              </td>
-              <td>{{notebook.updated_at|timesince}} ago</td>
-            </tr>
-            {%endfor%}
-          </tbody>
-        </table>
-        </div>
-      </div>
-    </div>
+      </div> <!-- /.col-xs-12 -->
+    </div> <!-- /.row -->
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+
+<script>
+  var options = {
+    valueNames: [ 'name', 'source', 'date' ]
+  };
+
+  {% for source in data_sources %}
+
+  $('.filter-{{ source|cut:" " }}').on('click',function(){
+    var $text = $(this).text();
+    if($(this).hasClass( 'selected' )){
+      notebookList.filter();
+      $(this).removeClass('selected');
+    } else {
+      notebookList.filter(function(item) {
+        console.log(item.values().source)
+        console.log($text)
+        return (item.values().source.includes($text));
+      });
+      $(this).addClass('selected');
+    }
+  });
+  {% endfor %}
+
+  var notebookList = new List('notebooks', options);
+</script>
 {% endblock %}
