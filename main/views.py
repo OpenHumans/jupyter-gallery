@@ -65,7 +65,8 @@ def data_sources(request, data_source):
     context = {
             'section': 'sources',
             'notebooks': nb_paged,
-            'search_term': data_source}
+            'search_term': data_source,
+            'order_by': order_variable}
     return render(request,
                   'main/sources.html',
                   context)
