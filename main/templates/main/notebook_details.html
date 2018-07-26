@@ -42,7 +42,7 @@
     </a>
     {%endfor%}
     {%for source in notebook.get_data_sources_json%}
-    <a href="{%url 'search' %}?search_term={{source}}&search_field=data_sources">
+    <a href="{%url 'data-sources' source%}">
     <span class="label label-info">{{source}}</span>
     </a>
     {%endfor%}

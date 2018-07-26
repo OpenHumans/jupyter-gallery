@@ -42,8 +42,8 @@ def index(request):
         return redirect('/notebooks')
     else:
         latest_notebooks = SharedNotebook.objects.filter(
-            master_notebook=None).order_by('-updated_at')[:5]
-        data_sources = get_all_data_sources()
+            master_notebook=None).order_by('-views')[:5]
+        data_sources = get_all_data_sources()[:6]
         context = {'oh_proj_page': settings.OH_ACTIVITY_PAGE,
                    'latest_notebooks': latest_notebooks,
                    'data_sources': data_sources}
@@ -52,9 +52,16 @@ def index(request):
 
 
 def data_sources(request, data_source):
+    order_variable = request.GET.get('order_by', 'updated_at')
+    if order_variable not in ['updated_at', 'likes', 'views']:
+        order_variable = 'updated_at'
     nbs = find_notebook_by_keywords(data_source, search_field='data_sources')
-    nbs = nbs.order_by('-views')
+    if order_variable == 'likes':
+        nbs = nbs.annotate(
+            likes=Count('notebooklike'))
+    nbs = nbs.order_by('-{}'.format(order_variable))
     nb_paged = paginate_items(nbs, request.GET.get('page'))
+
     context = {
             'section': 'sources',
             'notebooks': nb_paged,
@@ -235,6 +242,7 @@ def delete_notebook(request, notebook_id):
 def notebook_index(request):
     order_variable = request.GET.get('order_by', 'updated_at')
     data_sources = get_all_data_sources()
+    data_sources = sorted(data_sources)
     if order_variable not in ['updated_at', 'likes', 'views']:
         order_variable = 'updated_at'
     notebook_list = SharedNotebook.objects.filter(
