@@ -140,3 +140,24 @@ class ViewTest(TestCase):
         self.assertContains(post_response,
                             "source1",
                             status_code=200)
+
+    def test_notebook_index(self):
+        self.second_notebook = SharedNotebook(
+            oh_member=self.oh_member,
+            notebook_name='second_test.ipynb',
+            notebook_content=open(
+                'main/tests/fixtures/test_notebook.ipynb').read(),
+            description='test_description',
+            tags='["foo2", "bar2"]',
+            data_sources='["source3", "source4"]',
+            views=123,
+            updated_at=arrow.now().format(),
+            created_at=arrow.now().format()
+        )
+        self.second_notebook.save()
+        c = Client()
+        response = c.get('/notebooks/')
+        self.assertContains(response, 'source2', 4, status_code=200)
+        response_filtered = c.get('/notebooks/?source=source2')
+        self.assertContains(response_filtered, 'source2', status_code=200)
+        self.assertContains(response_filtered, 'source3', 2, status_code=200)
