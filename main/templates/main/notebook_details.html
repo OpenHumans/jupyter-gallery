@@ -42,7 +42,7 @@
     </a>
     {%endfor%}
     {%for source in notebook.get_data_sources_json%}
-    <a href="{%url 'data-sources' source%}">
+    <a href="{%url 'notebook-index'%}?source={{source}}">
     <span class="label label-info">{{source}}</span>
     </a>
     {%endfor%}
@@ -88,6 +88,9 @@
                 class="btn btn-primary">
         </form>
       </br>
+      {%else%}
+      Please <a href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}">
+        log in to comment</a>.
         {%endif%}
   </div>
   <div class="col-md-7">

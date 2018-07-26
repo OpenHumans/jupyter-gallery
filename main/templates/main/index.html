@@ -13,6 +13,12 @@
           account. </br></br>
           Once you have found a notebook you like, just click the <button type="button" class="btn btn-primary btn-sm disabled">Open in Personal Data Notebooks <i class="fas fa-external-link-alt"></i></button>
           button on the notebook page to run it on your own data!
+          <center>
+            <a class="btn btn-primary btn-lg"
+              href="{%url 'notebook-index'%}">
+              Explore Notebooks
+            </a>
+          </center>
         </p>
       </div>
       <div class="col-md-7">
@@ -28,19 +34,11 @@
         </p>
         <p>
         {%for source in data_sources%}
-          <a href="{%url 'data-sources' source%}" class="btn btn-primary btn-primary-hollow btn-lg padded">
+          <a href="{%url 'notebook-index'%}?source={{source}}" class="btn btn-primary btn-primary-hollow btn-lg padded">
           {{source}}
         </a>
         {%endfor%}
         </p>
-        <a class="btn btn-primary btn-lg"
-          href="{%url 'data-source-index'%}">
-          All Data Sources
-        </a>
-        <a class="btn btn-primary btn-lg"
-          href="{%url 'notebook-index'%}">
-          All Notebooks
-        </a>
       </div>
       <div class='col-md-6'>
         <h2>Popular Notebooks</h2>
@@ -64,7 +62,7 @@
               </td>
               <td>
                 {%for source in notebook.get_data_sources_json%}
-                <a href="{%url 'data-sources' source%}">
+                <a href="{%url 'notebook-index'%}?source={{source}}">
                 <span class="label label-info">{{source}}</span>
                 </a>
                 {%endfor%}

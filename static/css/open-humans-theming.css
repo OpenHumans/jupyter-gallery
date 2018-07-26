@@ -124,6 +124,10 @@ a:focus,
   margin-bottom: 5px;
 }
 
+.btn-primary.btn-primary.btn-lg.padded {
+  margin-bottom: 5px;
+}
+
 .btn-primary.btn-primary-hollow:hover, .btn-primary.btn-primary-hollow:focus {
   background-color: #fff1eb;
   border: 2px solid #f7763e;

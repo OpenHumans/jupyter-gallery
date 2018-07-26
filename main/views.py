@@ -51,27 +51,6 @@ def index(request):
         return render(request, 'main/index.html', context=context)
 
 
-def data_sources(request, data_source):
-    order_variable = request.GET.get('order_by', 'updated_at')
-    if order_variable not in ['updated_at', 'likes', 'views']:
-        order_variable = 'updated_at'
-    nbs = find_notebook_by_keywords(data_source, search_field='data_sources')
-    if order_variable == 'likes':
-        nbs = nbs.annotate(
-            likes=Count('notebooklike'))
-    nbs = nbs.order_by('-{}'.format(order_variable))
-    nb_paged = paginate_items(nbs, request.GET.get('page'))
-
-    context = {
-            'section': 'sources',
-            'notebooks': nb_paged,
-            'search_term': data_source,
-            'order_by': order_variable}
-    return render(request,
-                  'main/sources.html',
-                  context)
-
-
 def data_source_index(request):
     data_sources = get_all_data_sources_numeric()
     return render(request, 'main/sources_index.html', {
@@ -246,8 +225,14 @@ def notebook_index(request):
     data_sources = sorted(data_sources)
     if order_variable not in ['updated_at', 'likes', 'views']:
         order_variable = 'updated_at'
-    notebook_list = SharedNotebook.objects.filter(
-        master_notebook=None)
+    source_filter = request.GET.get('source', None)
+    if source_filter:
+        notebook_list = find_notebook_by_keywords(
+                            source_filter,
+                            search_field='data_sources')
+    else:
+        notebook_list = SharedNotebook.objects.filter(
+            master_notebook=None)
     if order_variable == 'likes':
         notebook_list = notebook_list.annotate(
             likes=Count('notebooklike'))
@@ -258,7 +243,8 @@ def notebook_index(request):
                   {'notebooks': notebooks,
                    'section': 'explore',
                    'order_by': order_variable,
-                   'data_sources': data_sources})
+                   'data_sources': data_sources,
+                   'source': source_filter})
 
 
 def search_notebooks(request):
