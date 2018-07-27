@@ -1,8 +1,7 @@
 language: python
 
 services:
-  - redis-server
-  
+
 
 python:
     - "3.5"
@@ -19,7 +18,6 @@ before_script:
   - bin/cc-test-reporter before-build
 
 script:
-  - python manage.py test
   - coverage run --source="." manage.py test
 
 after_success:
