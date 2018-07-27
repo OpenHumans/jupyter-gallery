@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from .models import SharedNotebook, NotebookLike
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 import nbconvert
 import nbformat
 from django.urls import reverse
@@ -67,7 +68,11 @@ def export_notebook(request, notebook_id):
 
 def open_notebook_hub(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
-    notebook.views += 1
-    notebook.save()
     notebook_link = create_notebook_link(notebook, request)
-    return redirect(notebook_link)
+    response = HttpResponseRedirect(notebook_link)
+    cookie = request.COOKIES.get('nb-view-{}'.format(notebook.pk))
+    if not cookie:
+        notebook.views += 1
+        notebook.save()
+        response.set_cookie('nb-view-{}'.format(notebook.pk), True)
+    return response
