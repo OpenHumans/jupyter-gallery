@@ -31,7 +31,8 @@
         <button type="submit" value="like_notebook" data-toggle="tooltip" data-container='body' data-placement="top" title='Number of Likes. Press to {%if liked%}un{%endif%}like.' class="btn btn-default btn-xs"><i class="fa{%if liked%}s{%else%}r{%endif%} fa-heart"></i> {{notebook.notebooklike_set.all|length}}</button>
       </form>
       {%else%}
-      <a data-toggle="tooltip" data-container='body' data-placement="top" title='Number of Likes'><small><i class="far fa-heart"></i> {{notebook.notebooklike_set.all|length}}</small></a>
+      <a class="btn btn-default btn-xs" href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code&redirect_uri={{ redirect_uri }}"
+        data-toggle="tooltip" data-container='body' data-placement="top" title='Number of Likes. Please log in to like.'><i class="far fa-heart"></i> {{notebook.notebooklike_set.all|length}}</a>
       {%endif%}
     </h3>
     <p>
