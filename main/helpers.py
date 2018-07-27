@@ -49,17 +49,17 @@ def find_notebook_by_keywords(search_term, search_field=None):
         tags__contains=search_term,
         master_notebook=None)
     if search_field == 'tags':
-        return notebooks_tag
+        return notebooks_tag.order_by('updated_at')
     notebooks_source = SharedNotebook.objects.filter(
                         data_sources__contains=search_term,
                         master_notebook=None)
     if search_field == 'data_sources':
-        return notebooks_source
+        return notebooks_source.order_by('updated_at')
     notebooks_user = SharedNotebook.objects.filter(
                         oh_member__oh_username__contains=search_term,
                         master_notebook=None)
     if search_field == 'username':
-        return notebooks_user
+        return notebooks_user.order_by('updated_at')
     notebooks_description = SharedNotebook.objects.filter(
                         description__contains=search_term,
                         master_notebook=None)
