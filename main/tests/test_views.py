@@ -45,10 +45,16 @@ class ViewTest(TestCase):
         self.assertIsNotNone(rendered_notebook.content)
 
     def test_open_notebook(self):
-        r = self.factory.get('/')
+        c = Client()
         self.assertEqual(self.notebook.views, 123)
-        open_notebook_hub(r, self.notebook.id)
+        c.get('/open-notebook/{}/'.format(self.notebook.id))
         updated_nb = SharedNotebook.objects.get(pk=self.notebook.id)
+        self.assertEqual(updated_nb.views, 124)
+        c.get('/open-notebook/{}/'.format(self.notebook.id))
+        updated_nb = SharedNotebook.objects.get(pk=self.notebook.id)
+        self.assertEqual(updated_nb.views, 124)
+        c.login(username=self.user.username, password='foobar')
+        c.get('/open-notebook/{}/'.format(self.notebook.id))
         self.assertEqual(updated_nb.views, 124)
 
     def test_shared(self):

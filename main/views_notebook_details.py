@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from .models import SharedNotebook, NotebookLike
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 import nbconvert
 import nbformat
 from django.urls import reverse
@@ -67,7 +68,7 @@ def export_notebook(request, notebook_id):
 
 def open_notebook_hub(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
-    nbview_session_key = 'notebook-view-{}'.format(notebook_id)
+    nbview_session_key = 'nb-view-{}'.format(notebook_id)
     if not request.session.get(nbview_session_key):
         request.session[nbview_session_key] = True
         notebook.views += 1
