@@ -68,18 +68,10 @@ def export_notebook(request, notebook_id):
 
 def open_notebook_hub(request, notebook_id):
     notebook = SharedNotebook.objects.get(pk=notebook_id)
+    nbview_session_key = 'nb-view-{}'.format(notebook_id)
+    if not request.session.get(nbview_session_key):
+        request.session[nbview_session_key] = True
+        notebook.views += 1
+        notebook.save()
     notebook_link = create_notebook_link(notebook, request)
-    response = HttpResponseRedirect(notebook_link)
-    cookie_name = 'nb-view-{}'.format(notebook.pk)
-    if request.user.is_authenticated:
-        if not request.session.get(cookie_name):
-            request.session[cookie_name] = True
-            notebook.views += 1
-            notebook.save()
-    else:
-        cookie = request.COOKIES.get(cookie_name)
-        if not cookie:
-            notebook.views += 1
-            notebook.save()
-            response.set_cookie(cookie_name, True)
-    return response
+    return redirect(notebook_link)
