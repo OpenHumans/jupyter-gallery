@@ -77,7 +77,14 @@ def suggest_data_sources(notebook_content):
     if potential_sources:
         response = requests.get(
             'https://www.openhumans.org/api/public-data/members-by-source/')
-        source_names = {i['source']: i['name'] for i in response.json()}
+        results = response.json()['results']
+        source_names = {i['source']: i['name'] for i in results}
+        while response.json()['next']:
+            response = requests.get(
+              'https://www.openhumans.org/api/public-data/members-by-source/')
+            results = response.json()['results']
+            for i in results:
+                source_names[i['source']] = i['name']
         suggested_sources = [source_names[i] for i in potential_sources
                              if i in source_names]
         suggested_sources = list(set(suggested_sources))
