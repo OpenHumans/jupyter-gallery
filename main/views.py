@@ -14,6 +14,9 @@ from .models import SharedNotebook
 import arrow
 import json
 from django.db.models import Count
+from django.urls import reverse
+from django.http import JsonResponse
+
 # Set up logging.
 logger = logging.getLogger(__name__)
 
@@ -260,3 +263,36 @@ def search_notebooks(request):
                   'main/search.html',
                   {'notebooks': notebooks,
                    'search_term': search_term})
+
+
+def notebook_by_source(request):
+    source_name = request.GET.get('source')
+    notebook_list = []
+    notebooks = SharedNotebook.objects.filter(
+                        data_sources__contains=source_name,
+                        master_notebook=None)
+    notebooks = notebooks.annotate(
+        likes=Count('notebooklike'))
+    for notebook in notebooks:
+        notebook_list.append(
+            {
+                'name': notebook.notebook_name,
+                'description': notebook.description,
+                'views': notebook.views,
+                'likes': notebook.likes,
+                'details_url': request.build_absolute_uri(
+                    reverse('notebook-details', args=[notebook.id])),
+                'preview_url': request.build_absolute_uri(
+                    reverse('render-notebook', args=[notebook.id])),
+                'open_url': request.build_absolute_uri(
+                    reverse('open-notebook', args=[notebook.id])
+                )
+            }
+        )
+    notebook_list = sorted(
+        notebook_list,
+        key=lambda k: k['views'], reverse=True)
+    output = {
+        'source_name': source_name, 'hits': len(notebook_list),
+        'notebooks': notebook_list}
+    return JsonResponse(output)
