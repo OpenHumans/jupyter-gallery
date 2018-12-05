@@ -258,10 +258,18 @@ def search_notebooks(request):
         search_term = request.GET.get('search_term', '')
         search_field = request.GET.get('search_field', None)
         notebook_list = find_notebook_by_keywords(search_term, search_field)
+    order_variable = request.GET.get('order_by', 'updated_at')
+    if order_variable not in ['updated_at', 'likes', 'views']:
+        order_variable = 'updated_at'
+    if order_variable == 'likes':
+        notebook_list = notebook_list.annotate(
+            likes=Count('notebooklike'))
+    notebook_list = notebook_list.order_by('-{}'.format(order_variable))
     notebooks = paginate_items(notebook_list, request.GET.get('page'))
     return render(request,
                   'main/search.html',
                   {'notebooks': notebooks,
+                   'order_by': order_variable,
                    'search_term': search_term})
 
 
