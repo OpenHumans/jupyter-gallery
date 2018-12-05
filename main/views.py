@@ -15,7 +15,7 @@ import arrow
 import json
 from django.db.models import Count
 from django.urls import reverse
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 
 # Set up logging.
 logger = logging.getLogger(__name__)
