@@ -100,7 +100,7 @@ def identify_master_notebook(notebook_name, oh_member):
 
 
 def paginate_items(queryset, page):
-    paginator = Paginator(queryset, 10)
+    paginator = Paginator(queryset, 1)
     try:
         paged_queryset = paginator.page(page)
     except PageNotAnInteger:

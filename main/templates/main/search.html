@@ -51,13 +51,13 @@
 <nav aria-label="pagination">
       <ul class="pagination">
         {% if notebooks.has_previous %}
-            <li><a href="?page=1">&laquo; first</a></li>
-            <li><a aria-label="Previous" href="?page={{ notebooks.previous_page_number }}">previous</a></li>
+            <li><a href="?page=1&search_term={{search_term}}">&laquo; first</a></li>
+            <li><a aria-label="Previous" href="?page={{ notebooks.previous_page_number }}&search_term={{search_term}}">previous</a></li>
         {% endif %}
             <li class="active"><a href='#'>Page {{ notebooks.number }} of {{ notebooks.paginator.num_pages }}</a></li>
         {% if notebooks.has_next %}
-            <li><a href="?page={{ notebooks.next_page_number }}">next</a></li>
-            <li><a href="?page={{ notebooks.paginator.num_pages }}">last &raquo;</a></li>
+            <li><a href="?page={{ notebooks.next_page_number }}&search_term={{search_term}}">next</a></li>
+            <li><a href="?page={{ notebooks.paginator.num_pages }}&search_term={{search_term}}">last &raquo;</a></li>
         {% endif %}
       </ul>
 </nav>
