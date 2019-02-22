@@ -285,6 +285,7 @@ def notebook_by_source(request):
         notebook_list.append(
             {
                 'name': notebook.notebook_name,
+                'user': notebook.oh_member.oh_username,
                 'description': notebook.description,
                 'views': notebook.views,
                 'likes': notebook.likes,
