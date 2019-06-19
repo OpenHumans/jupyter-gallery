@@ -60,7 +60,7 @@ def render_notebook(request, notebook_id):
     html_exporter = nbconvert.HTMLExporter()
     html_exporter.template_file = 'basic'
     # below also removes output of code
-    html_exporter.exclude_code_cell = True
+    # html_exporter.exclude_code_cell = True
     (body, resources) = html_exporter.from_notebook_node(format_notebook)
     return HttpResponse(body)
 
