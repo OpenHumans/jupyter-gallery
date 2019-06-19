@@ -33,13 +33,19 @@ def download_notebook_oh(notebook_url):
 
 def create_notebook_link(notebook, request):
     base_url = request.build_absolute_uri("/").rstrip('/')
+    target = request.GET.get('target', '')
+    if target == 'voila':
+        target = "&target=voila"
+    else:
+        target = ''
     jupyterhub_url = settings.JUPYTERHUB_BASE_URL
     export_url = reverse('export-notebook', args=(notebook.id,))
-    notebook_link = '{}/notebook-import?notebook_location={}{}&notebook_name={}'.format(
+    notebook_link = '{}/notebook-import?notebook_location={}{}&notebook_name={}{}'.format(
         jupyterhub_url,
         base_url,
         export_url,
-        notebook.notebook_name
+        notebook.notebook_name,
+        target
     )
     return notebook_link
 

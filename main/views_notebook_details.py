@@ -26,6 +26,8 @@ def notebook_details(request, notebook_id):
                                      as_version=nbformat.NO_CONVERT)
     html_exporter = nbconvert.HTMLExporter()
     html_exporter.template_file = 'basic'
+    html_exporter.exclude_code_cell = True
+
     (body, resources) = html_exporter.from_notebook_node(format_notebook)
     return render(request,
                   'main/notebook_details.html',
@@ -56,6 +58,7 @@ def render_notebook(request, notebook_id):
                                      as_version=nbformat.NO_CONVERT)
     html_exporter = nbconvert.HTMLExporter()
     html_exporter.template_file = 'basic'
+    html_exporter.exclude_code_cell = True
     (body, resources) = html_exporter.from_notebook_node(format_notebook)
     return HttpResponse(body)
 
