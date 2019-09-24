@@ -18,6 +18,7 @@ class SharedNotebookTest(TestCase):
                             access_token='foo',
                             refresh_token='bar',
                             expires_in=36000)
+        self.oh_member.save()
         self.notebook = SharedNotebook(
             oh_member=self.oh_member,
             notebook_name='test_notebook.ipynb',
@@ -37,8 +38,10 @@ class SharedNotebookTest(TestCase):
                             access_token='foo',
                             refresh_token='bar',
                             expires_in=36000)
+        self.oh_member_two.save()
         self.oh_member_data = {
             'created': '2018-01-19T21:55:40.049169Z',
+            'next': None,
             'project_member_id': '1234',
             'message_permission': True,
             'sources_shared': ['direct-sharing-71'],

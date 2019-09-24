@@ -9,7 +9,7 @@ interactions:
     method: GET
     uri: https://www.openhumans.org/api/direct-sharing/project/exchange-member/?access_token=foobar
   response:
-    body: {string: '{"created":"2018-01-19T21:55:40.049169Z","project_member_id":"1234","message_permission":true,"sources_shared":["direct-sharing-71"],"username":"test_user","data":[{"id":12,"basename":"twitter-and-fitbit-activity.ipynb","created":"2018-06-06T17:09:26.688794Z","download_url":"https://www.example.com/twitter-and-fitbit-activity.ipynb","metadata":{"tags":["personal data notebook","notebook","jupyter"],"description":"A Personal Data Notebook"},"source":"direct-sharing-71"}]}'}
+    body: {string: '{"created":"2018-01-19T21:55:40.049169Z", "next":null ,"project_member_id":"1234","message_permission":true,"sources_shared":["direct-sharing-71"],"username":"test_user","data":[{"id":12,"basename":"twitter-and-fitbit-activity.ipynb","created":"2018-06-06T17:09:26.688794Z","download_url":"https://www.example.com/twitter-and-fitbit-activity.ipynb","metadata":{"tags":["personal data notebook","notebook","jupyter"],"description":"A Personal Data Notebook"},"source":"direct-sharing-71"}]}'}
     headers:
       Allow: ['GET, HEAD, OPTIONS']
       Cache-Control: ['max-age=0, must-revalidate, no-store, no-cache']
