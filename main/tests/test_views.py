@@ -2,7 +2,7 @@ from django.test import TestCase, RequestFactory, Client
 from django.conf import settings
 from open_humans.models import OpenHumansMember
 from main.models import SharedNotebook, NotebookLike
-from main.views_notebook_details import render_notebook, open_notebook_hub
+from main.views_notebook_details import render_notebook
 import arrow
 import vcr
 
@@ -86,8 +86,9 @@ class ViewTest(TestCase):
         logged_in_response = c.get('/likes/')
         self.assertEqual(logged_in_response.status_code, 200)
 
-    @vcr.use_cassette('main/tests/fixtures/complete.yaml',
-                  record_mode='none')
+    @vcr.use_cassette(
+        'main/tests/fixtures/complete.yaml',
+        record_mode='none')
     def test_complete(self):
         c = Client()
         self.assertEqual(1,
