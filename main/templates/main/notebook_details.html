@@ -50,8 +50,8 @@
     {%endfor%}
     </p>
     <p>
-      <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-primary">Run Notebook <i class="fas fa-external-link-alt"></i></button></a>
-      <a href='{% url 'open-notebook' notebook.id %}?target=voila'><button type="button" class="btn btn-info">Edit & Run Notebook <i class="fas fa-pencil-alt"></i></button></a>
+      <a href='{% url 'open-notebook' notebook.id %}?target=voila'><button type="button" class="btn btn-primary">Run Notebook <i class="fas fa-external-link-alt"></i></button></a>
+      <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-info">Edit & Run Notebook <i class="fas fa-pencil-alt"></i></button></a>
     </p>
     {% if notebook.master_notebook or other_notebooks%}
     <h4><i class="far fa-copy"></i> Other Notebook Versions</h4>
