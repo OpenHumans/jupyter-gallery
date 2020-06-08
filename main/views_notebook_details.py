@@ -30,7 +30,8 @@ def notebook_details(request, notebook_id):
     (body, resources) = html_exporter.from_notebook_node(format_notebook)
     # below removes input code of code cells
     html_exporter.exclude_input = True
-    (no_code_body, resources) = html_exporter.from_notebook_node(format_notebook)
+    (no_code_body, resources) = html_exporter.from_notebook_node(
+        format_notebook)
 
     return render(request,
                   'main/notebook_details.html',
