@@ -3,8 +3,13 @@
     margin: auto;
   }
 
-
 .dataframe {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.output_html {
     display: block;
     overflow-x: auto;
     white-space: nowrap;

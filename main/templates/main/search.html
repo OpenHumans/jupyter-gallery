@@ -34,8 +34,9 @@
         </a>
         {%endfor%}
       </td>
-      <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a></br>
-      <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">open as notebook <i class="fas fa-external-link-alt"></i></button></a></td>
+      <td><a href="#previewModal" data-nbid="{{notebook.id}}" data-nbtitle="{{notebook.notebook_name}}"data-toggle="modal"><button type="button" class="btn btn-default btn-xs">preview <i class="fas fa-camera-retro"></i></button></a>
+      <a href='{% url 'open-notebook' notebook.id %}?target=voila'><button type="button" class="btn btn-default btn-xs">run notebook <i class="fas fa-external-link-alt"></i></button></a>
+      <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-default btn-xs">edit notebook <i class="fas fa-pencil-alt"></i></button></a></td>
       <td>
         <i class="fas fa-eye"></i> {{notebook.views}}</br>
       </td>

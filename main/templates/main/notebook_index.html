@@ -66,8 +66,8 @@
     <nav aria-label="pagination">
           <ul class="pagination">
             {% if notebooks.has_previous %}
-                <li><a href="?page=1">&laquo; first</a></li>
-                <li><a aria-label="Previous" href="?page={{ notebooks.previous_page_number }}{%if source%}&source={{source}}{%endif%}">previous</a></li>
+                <li><a href="?order_by={{order_by}}&page=1{%if source%}&source={{source}}{%endif%}">&laquo; first</a></li>
+                <li><a aria-label="Previous" href="?order_by={{order_by}}&page={{ notebooks.previous_page_number }}{%if source%}&source={{source}}{%endif%}">previous</a></li>
             {% endif %}
                 <li class="active"><a href='#'>Page {{ notebooks.number }} of {{ notebooks.paginator.num_pages }}</a></li>
             {% if notebooks.has_next %}
@@ -112,7 +112,8 @@
         <div id='notebook_filler'></div>
       </div>
       <div class="modal-footer">
-        <a id='nbopenId' href='/test2' class="btn btn-default">open as notebook <i class="fas fa-external-link-alt"></i></a>
+        <a id='nbopenId' href='/test2' class="btn btn-default">run notebook <i class="fas fa-external-link-alt"></i></a>
+        <a id='nbeditId' href='/test3' class="btn btn-default">edit & run notebook <i class="fas fa-external-link-alt"></i></a>
         <a id='detailId' href='/test' class="btn btn-default">more details <i class="fas fa-info-circle"></i></a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>

@@ -5,7 +5,8 @@
 
 <h1>
   Details for <code>{{notebook.notebook_name}}</code>
-  <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-primary">Open <i class="fas fa-external-link-alt"></i></button></a>
+  <a href='{% url 'open-notebook' notebook.id %}?target=voila'><button type="button" class="btn btn-primary">Open <i class="fas fa-external-link-alt"></i></button></a>
+  <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-info">Edit & Run <i class="fas fa-pencil-alt"></i></button></a>
 </h1>
 <h4><small>
   Published by
@@ -49,7 +50,8 @@
     {%endfor%}
     </p>
     <p>
-      <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-primary">Open in Personal Data Notebooks <i class="fas fa-external-link-alt"></i></button></a>
+      <a href='{% url 'open-notebook' notebook.id %}'><button type="button" class="btn btn-primary">Run Notebook <i class="fas fa-external-link-alt"></i></button></a>
+      <a href='{% url 'open-notebook' notebook.id %}?target=voila'><button type="button" class="btn btn-info">Edit & Run Notebook <i class="fas fa-pencil-alt"></i></button></a>
     </p>
     {% if notebook.master_notebook or other_notebooks%}
     <h4><i class="far fa-copy"></i> Other Notebook Versions</h4>
@@ -95,14 +97,34 @@
         {%endif%}
   </div>
   <div class="col-md-7">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Notebook <div style='float: right;'><small><i class="far fa-clock"></i> Last updated {{notebook.updated_at|timesince}} ago</small></style></h3>
-      </div>
-      <div class="panel-body">
-        {{notebook_preview|safe}}
+    <div>
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#output" aria-controls="output" role="tab" data-toggle="tab">Output</a></li>
+        <li role="presentation"><a href="#code" aria-controls="code" role="tab" data-toggle="tab">Output & Code</a></li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="output">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Notebook <div style='float: right;'><small><i class="far fa-clock"></i> Last updated {{notebook.updated_at|timesince}} ago</small></style></h3>
+            </div>
+            <div class="panel-body">
+              {{codeless_notebook_preview|safe}}
+            </div>
+          </div>
+        </div>
+      <div role="tabpanel" class="tab-pane active" id="code">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Notebook <div style='float: right;'><small><i class="far fa-clock"></i> Last updated {{notebook.updated_at|timesince}} ago</small></style></h3>
+          </div>
+          <div class="panel-body">
+            {{notebook_preview|safe}}
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</div>
 </div>
 {% endblock %}
